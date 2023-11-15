@@ -40,7 +40,7 @@ model.compile(optimizer=custom_optimizer, loss='mse',  metrics=["mape","mse"])
 # Early stopping callback
 early_stopping = EarlyStopping(monitor='val_mse', patience=5000, restore_best_weights=True)
 # Model checkpoint callback
-checkpoint = ModelCheckpoint("best_model.h5", save_best_only=True)
+checkpoint = ModelCheckpoint("my_model/best_model.h5", save_best_only=True)
 # TensorBoard callback for profiling
 tensorboard = TensorBoard(log_dir="logs/")
 

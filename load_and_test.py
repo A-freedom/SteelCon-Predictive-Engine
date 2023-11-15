@@ -2,12 +2,12 @@
 import tensorflow as tf
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
+from sklearn.model_selection import train_test_split
 import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-from sklearn.model_selection import train_test_split
 
 # %%
-loaded_model = tf.keras.models.load_model('best_model.h5')
+loaded_model = tf.keras.models.load_model('my_model/best_model.h5')
 
 
 # %%
