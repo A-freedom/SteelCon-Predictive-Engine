@@ -32,7 +32,7 @@ y_pre = [i[0] for i in y_pre]
 pd.DataFrame(y_pre).to_csv('predicts.cvs',index_label=False,index=False)
 error = (y_test - y_pre)/y_test *100
 error = error.abs().sort_values()
-error.to_csv('error.csv', index=False,index_label=False)
+# error.to_csv('error.csv', index=False,index_label=False)
 error.describe()
 
 
@@ -44,7 +44,7 @@ y_pre = [i[0] for i in y_pre]
 pd.DataFrame(y_pre).to_csv('predicts.cvs',index_label=False,index=False)
 error = (y - y_pre)/y *100
 error = error.abs().sort_values()
-error.to_csv('error.csv', index=False,index_label=False)
+# error.to_csv('error.csv', index=False,index_label=False)
 error.describe()
 
 
