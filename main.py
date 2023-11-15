@@ -58,5 +58,6 @@ print("TESTING DATA")
 model.evaluate(X_test, y_test)
 
 # Save the model
-model.save('my_model')
 # %%
+model.save('my_model')
+
