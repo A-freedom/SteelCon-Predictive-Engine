@@ -26,7 +26,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1,random_s
 # %%
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(75, activation='tanh'),
-    tf.keras.layers.Dense(75),
+    tf.keras.layers.Dense(75 ,activation='relu'),
+    tf.keras.layers.Dense(75,activation='relu'),
     tf.keras.layers.Dense(1)  # Output layer for regression
 ])
 
