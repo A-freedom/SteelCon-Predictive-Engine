@@ -11,18 +11,24 @@ loaded_model = tf.keras.models.load_model('my_model/best_model.h5')
 
 
 # %%
+# Set a random seed for reproducibility
+tf.random.set_seed(42)
 df = pd.read_csv('DATA/data_R_FCST.csv', header=0)
 
-# %%
-X = df[['b (mm)','h (mm)','t (mm)','L (mm)','fy (MPa)','fc (MPa)']]
+# Check and swap values if 'b (mm)' is less than 'h (mm)'
+mask = df['b (mm)'] < df['h (mm)']
+df.loc[mask, ['b (mm)', 'h (mm)']] = df.loc[mask, ['h (mm)', 'b (mm)']].values
+
+X = df[['b (mm)','h (mm)','t (mm)','fy (MPa)','fc (MPa)']]
 y = df['N Test (kN)']
 
-# %%
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
-# %%
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1,random_state=20)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15,random_state=20)
+X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=0.2,random_state=20)
+
+
 
 # evaluate and status for testing data
 # %%
