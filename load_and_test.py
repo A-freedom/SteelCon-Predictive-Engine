@@ -53,6 +53,4 @@ error = error.abs().sort_values()
 # error.to_csv('error.csv', index=False,index_label=False)
 error.describe()
 
-
-
 # %%

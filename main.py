@@ -21,12 +21,20 @@ if tf.config.experimental.list_physical_devices('GPU'):
     tf.config.threading.set_intra_op_parallelism_threads(1)
     tf.config.threading.set_inter_op_parallelism_threads(1)
 
-
+# %%
 df = pd.read_csv('DATA/data_R_FCST.csv', header=0)
+
+#Check for non-null values in the specified column
+df = df[df['Ea (Gpa)'].notna()]
+
+threshold = 197  # thresshold for 'Ea (Gpa)'
+df = df[df['Ea (Gpa)'] >= threshold]
 
 # Check and swap values if 'b (mm)' is less than 'h (mm)'
 mask = df['b (mm)'] < df['h (mm)']
 df.loc[mask, ['b (mm)', 'h (mm)']] = df.loc[mask, ['h (mm)', 'b (mm)']].values
+
+
 
 X = df[['b (mm)','h (mm)','t (mm)','fy (MPa)','fc (MPa)']]
 y = df['N Test (kN)']
