@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+import matplotlib.pyplot as plt
 
 # %%
 loaded_model = tf.keras.models.load_model('my_model/best_model.h5')
@@ -38,34 +39,59 @@ X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=0.2,ra
 
 
 
-# evaluate and status for testing data
+# evaluate for testing data
 # %%
 loaded_model.evaluate(X_test, y_test)
 y_pre = loaded_model.predict(X_test)
 y_pre = [i[0] for i in y_pre]
 pd.DataFrame(y_pre).to_csv('predicts.cvs',index_label=False,index=False)
-error = (y_test - y_pre)/y_test *100
-error = error.abs().sort_values()
+error = (y_pre)/y_test *100
+# error.to_csv('error.csv', index=False,index_label=False)
+error.describe()
+
+
+
+# %% ploting 
+plt.scatter(y_test, y_pre, marker='o', s=5)
+# Adding labels and title
+plt.xlabel('testing real data')
+plt.ylabel('data')
+plt.title('testing real data vs preducation')
+plt.show()
+
+
+
+# %% export
+# exportData = {'real data': y_test, 'preducation data': y_pre}
+# pandaDataFram = pd.DataFrame(exportData)
+# pandaDataFram.to_csv('testing_data.csv', index=False)
+
+
+# %%
+
+
+
+# %% evaluate and for All data
+loaded_model.evaluate(X, y)
+y_pre = loaded_model.predict(X)
+y_pre = [i[0] for i in y_pre]
+pd.DataFrame(y_pre).to_csv('predicts.cvs',index_label=False,index=False)
+error = (y_pre)/y *100
 # error.to_csv('error.csv', index=False,index_label=False)
 error.describe()
 
 # %% ploting 
-import matplotlib.pyplot as plt
-
-plt.scatter(y_test, y_pre, marker='o', s=10)
-
+plt.scatter(y, y_pre, marker='o', s=5)
 # Adding labels and title
-plt.xlabel('real data')
-plt.ylabel('preducation data')
-plt.title('real data vs preducation data')
-
-# Display the plot
+plt.xlabel('All real data')
+plt.ylabel('preducation')
+plt.title('All data vs preductions')
 plt.show()
 
-# %% export the preducation data vs testing data
-exportData = {'real data': y_test, 'preducation data': y_pre}
-pandaDataFram = pd.DataFrame(exportData)
-pandaDataFram.to_csv('testing_data.csv', index=False)
+# %% export evaluate and status for All data
+# exportData = {'real data': y, 'preducation data': y_pre}
+# pandaDataFram = pd.DataFrame(exportData)
+# pandaDataFram.to_csv('testing_data.csv', index=False)
 
 
 # %%
