@@ -36,7 +36,7 @@ df.loc[mask, ['b (mm)', 'h (mm)']] = df.loc[mask, ['h (mm)', 'b (mm)']].values
 
 
 
-X = df[['b (mm)','h (mm)','t (mm)','fy (MPa)','fc (MPa)']]
+X = df[['b (mm)','h (mm)','t (mm)','fy (MPa)','fc (MPa)','Ea (Gpa)']]
 y = df['N Test (kN)']
 
 scaler = StandardScaler()
@@ -80,5 +80,5 @@ model.evaluate(X_test, y_test)
 # %%
 model.save('my_model')
 
-
+# %%
 

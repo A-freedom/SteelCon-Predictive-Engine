@@ -28,7 +28,7 @@ df.loc[mask, ['b (mm)', 'h (mm)']] = df.loc[mask, ['h (mm)', 'b (mm)']].values
 
 
 
-X = df[['b (mm)','h (mm)','t (mm)','fy (MPa)','fc (MPa)']]
+X = df[['b (mm)','h (mm)','t (mm)','fy (MPa)','fc (MPa)','Ea (Gpa)']]
 y = df['N Test (kN)']
 
 scaler = StandardScaler()
@@ -42,20 +42,21 @@ X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=0.2,ra
 # evaluate for testing data
 # %%
 loaded_model.evaluate(X_test, y_test)
-y_pre = loaded_model.predict(X_test)
-y_pre = [i[0] for i in y_pre]
-pd.DataFrame(y_pre).to_csv('predicts.cvs',index_label=False,index=False)
-error = (y_pre)/y_test *100
+y_test_pre = loaded_model.predict(X_test)
+y_test_pre = [i[0] for i in y_test_pre]
+pd.DataFrame(y_test_pre).to_csv('predicts.cvs',index_label=False,index=False)
+error = (y_test_pre)/y_test *100
 # error.to_csv('error.csv', index=False,index_label=False)
 error.describe()
 
 
 
 # %% ploting 
-plt.scatter(y_test, y_pre, marker='o', s=5)
+plt.gca().set_aspect('equal', adjustable='box')
+plt.scatter(y_test, y_test_pre, marker='o', s=5)
 # Adding labels and title
 plt.xlabel('testing real data')
-plt.ylabel('data')
+plt.ylabel('preducation')
 plt.title('testing real data vs preducation')
 plt.show()
 
@@ -73,15 +74,16 @@ plt.show()
 
 # %% evaluate and for All data
 loaded_model.evaluate(X, y)
-y_pre = loaded_model.predict(X)
-y_pre = [i[0] for i in y_pre]
-pd.DataFrame(y_pre).to_csv('predicts.cvs',index_label=False,index=False)
-error = (y_pre)/y *100
+y_all_pre = loaded_model.predict(X)
+y_all_pre = [i[0] for i in y_all_pre]
+pd.DataFrame(y_all_pre).to_csv('predicts.cvs',index_label=False,index=False)
+error = (y_all_pre)/y *100
 # error.to_csv('error.csv', index=False,index_label=False)
 error.describe()
 
 # %% ploting 
-plt.scatter(y, y_pre, marker='o', s=5)
+plt.gca().set_aspect('equal', adjustable='box')
+plt.scatter(y, y_all_pre, marker='o', s=5)
 # Adding labels and title
 plt.xlabel('All real data')
 plt.ylabel('preducation')
