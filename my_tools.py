@@ -13,10 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
-def evaluate_and_plot(X, y, model, data_description):
-    # Evaluate the model
-    model.evaluate(X, y)
-    
+def evaluate_and_plot(X, y, model, data_description):    
     # Predictions
     y_pred = model.predict(X)
     y_pred = [i[0] for i in y_pred]
