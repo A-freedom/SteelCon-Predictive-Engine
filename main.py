@@ -13,7 +13,7 @@ tf.random.set_seed(random_seed)
 
 # %%
 # Load the dataset
-X_train, X_test, y_train, y_test ,X , y = get_traing_and_testing_data(testing_index=2)
+X_train, X_test, y_train, y_test ,X , y = get_traing_and_testing_data()
 
 # %%
 # Model design
@@ -38,7 +38,7 @@ checkpoint = ModelCheckpoint("my_model/best_model.h5", save_best_only=True)
 tensorboard = TensorBoard(log_dir="logs/")
 
 # Train the model
-model.fit(X_train, y_train, epochs=700000, batch_size=len(X_train), verbose=2, validation_data=(X_test, y_test), callbacks=[checkpoint, tensorboard])
+model.fit(X_train, y_train, epochs=6000, batch_size=len(X_train), verbose=2, validation_data=(X_test, y_test), callbacks=[checkpoint, tensorboard])
 
 # Evaluate the model on testing data
 model.evaluate(X_test,y_test)

@@ -2,8 +2,10 @@
 import os
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
+from filtering import distance_filter
 random_seed= 51980
 defualt_number_of_parts = 5
+testing_index = 2
 # this funcation is used to do all the prossing of the data
 def get_data_fram():
     # Read the data
@@ -21,11 +23,13 @@ def get_data_fram():
     columns_to_normalize = df.columns[df.columns != 'N Test (kN)']
     df[columns_to_normalize] = pd.DataFrame(scaler.fit_transform(df[columns_to_normalize]))
     # Save original index
-    df['original_index'] = df.index
+    # df['original_index'] = df.index
+
+    # removing real close or smailer valuse
+    df = distance_filter(df)
 
     # Shuffle the DataFrame randomly
     df = df.sample(frac=1, random_state=random_seed).reset_index(drop=True)
-
 
     return df
 
@@ -45,7 +49,7 @@ def get_data_parts(num_parts = defualt_number_of_parts):
     # Now data_parts is an array containing the divided parts of the DataFrame
 
 
-def get_traing_and_testing_data(testing_index, num_parts=defualt_number_of_parts):
+def get_traing_and_testing_data(num_parts=defualt_number_of_parts):
     # Assuming you have a function called get_data_parts() that returns a list of data parts
     data_parts = get_data_parts(num_parts=num_parts)
     

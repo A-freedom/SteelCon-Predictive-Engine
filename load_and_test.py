@@ -12,7 +12,7 @@ loaded_model = tf.keras.models.load_model('my_model/best_model.h5')
 
     
 # %% 
-X_train, X_test, y_train, y_test ,X , y = get_traing_and_testing_data(testing_index=3)
+X_train, X_test, y_train, y_test ,X , y = get_traing_and_testing_data()
 
 print('+++++ model evaluate +++++')
 loaded_model.evaluate(X_test,y_test)
