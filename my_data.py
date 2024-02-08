@@ -3,6 +3,7 @@ import os
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from filtering import distance_filter
+from filtering import outlier_filter
 random_seed= 51980
 defualt_number_of_parts = 5
 testing_index = 2
@@ -14,20 +15,29 @@ def get_data_fram():
     # Choosing only the relevant columns
     df = df[['b (mm)', 'h (mm)', 't (mm)', 'L (mm)', 'fy (MPa)', 'fc (MPa)', 'N Test (kN)']]
 
+    df = df.loc[df['N Test (kN)'] < 10000]
+
     # Check and swap values if 'b (mm)' is less than 'h (mm)'
     mask = df['b (mm)'] < df['h (mm)']
     df.loc[mask, ['b (mm)', 'h (mm)']] = df.loc[mask, ['h (mm)', 'b (mm)']].values
 
-    # Normalize the values between 0 and 1
+    # Normalize
     scaler = StandardScaler()
-    columns_to_normalize = df.columns[df.columns != 'N Test (kN)']
-    df[columns_to_normalize] = pd.DataFrame(scaler.fit_transform(df[columns_to_normalize]))
+    df.iloc[:, :6] = pd.DataFrame(scaler.fit_transform(df.iloc[:, :6].values))
     # Save original index
     # df['original_index'] = df.index
 
+    print(f'data total zise : {len(df)}')
+
     # removing real close or smailer valuse
     df = distance_filter(df)
+    print(f'data total after distance_filter : {len(df)}')
 
+    # removing outlayer valuse
+    df = outlier_filter(df)
+    print(f'data total after outlier_filter : {len(df)}')
+    
+    
     # Shuffle the DataFrame randomly
     df = df.sample(frac=1, random_state=random_seed).reset_index(drop=True)
 
@@ -35,7 +45,6 @@ def get_data_fram():
 
 
 def get_data_parts(num_parts = defualt_number_of_parts):
-#%%
     df = get_data_fram()
     # Divide the data into parts and store them in an array of pandas DataFrames
     data_parts = []
