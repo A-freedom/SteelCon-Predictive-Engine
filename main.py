@@ -13,18 +13,20 @@ tf.random.set_seed(random_seed)
 
 # %%
 # Load the dataset
-X_train, X_test, y_train, y_test ,X , y = get_traing_and_testing_data(testing_index=1)
+X_train, X_test, y_train, y_test ,X , y = get_traing_and_testing_data(testing_index=2)
 
 # %%
 # Model design
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(75,activation='tanh'),
-    tf.keras.layers.Dense(25),
-    tf.keras.layers.Dense(1)  # Output layer for regression
+    tf.keras.layers.Dense(75,activation='tanh'),
+    tf.keras.layers.Dense(50),
+    tf.keras.layers.Dense(50),
+    tf.keras.layers.Dense(1,activation='elu')  # Output layer for regression
 ])
 
 # Compile the model
-custom_optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+custom_optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)
 model.compile(optimizer=custom_optimizer, loss='mse',  metrics=["mape","mse"])
 
 # Define callbacks
@@ -36,7 +38,7 @@ checkpoint = ModelCheckpoint("my_model/best_model.h5", save_best_only=True)
 tensorboard = TensorBoard(log_dir="logs/")
 
 # Train the model
-model.fit(X_train, y_train, epochs=7000, batch_size=len(X_train), verbose=2, validation_data=(X_test, y_test), callbacks=[checkpoint, tensorboard])
+model.fit(X_train, y_train, epochs=700000, batch_size=len(X_train), verbose=2, validation_data=(X_test, y_test), callbacks=[checkpoint, tensorboard])
 
 # Evaluate the model on testing data
 model.evaluate(X_test,y_test)
