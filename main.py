@@ -1,4 +1,4 @@
-#%%
+# %%
 import tensorflow as tf
 import os
 
@@ -17,25 +17,16 @@ X_train, X_test, y_train, y_test, X, y = get_traing_and_testing_data()
 
 # Model design
 model = tf.keras.Sequential([
-    tf.keras.layers.Dense(10, activation='elu'),
-    tf.keras.layers.Dense(25, activation='elu'),
-    tf.keras.layers.Dense(10, activation='elu'),
-    tf.keras.layers.Dense(25, activation='elu'),
-    tf.keras.layers.Dense(10, activation='elu'),
-    tf.keras.layers.Dense(25, activation='elu'),
-    tf.keras.layers.Dense(10, activation='elu'),
-    tf.keras.layers.Dense(25, activation='elu'),
-    tf.keras.layers.Dense(10, activation='elu'),
-    tf.keras.layers.Dense(25, activation='elu'),
-    tf.keras.layers.Dense(10, activation='elu'),
-    tf.keras.layers.Dense(25, activation='elu'),
-    tf.keras.layers.Dense(10, activation='elu'),
+    tf.keras.layers.Dense(75, activation='elu'),
+    tf.keras.layers.Dense(75, activation='elu'),
+    tf.keras.layers.Dense(75, activation='elu'),
+    tf.keras.layers.Dense(10),
     tf.keras.layers.Dense(1, activation='elu')  # Output layer for regression
 ])
 
 # Compile the model
-custom_optimizer = tf.keras.optimizers.Adam(learning_rate=0.001,)
-model.compile(optimizer=custom_optimizer,loss='mse', metrics=["mape", "mse"])
+custom_optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+model.compile(optimizer=custom_optimizer, loss='mse', metrics=["mape", "mse"])
 
 # Define callbacks
 # Early stopping callback
@@ -46,7 +37,7 @@ checkpoint = ModelCheckpoint("my_model/best_model.h5", save_best_only=True)
 tensorboard = TensorBoard(log_dir="logs/")
 
 # Train the model
-model.fit(X_train, y_train, epochs=70000, batch_size=len(X_train), verbose=2, validation_data=(X_test, y_test),
+model.fit(X_train, y_train, epochs=12000, batch_size=len(X_train), verbose=2, validation_data=(X_test, y_test),
           callbacks=[checkpoint, tensorboard, early_stopping])
 
 # Evaluate the model on testing data
@@ -57,5 +48,4 @@ model.save('my_model')
 evaluate_and_plot(X_test, y_test, model, 'test data')
 
 evaluate_and_plot(X, y, model, 'All data')
-
-#%%
+# %%
