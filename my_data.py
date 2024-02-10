@@ -27,14 +27,14 @@ def get_data_fram():
     # Save original index
     # df['original_index'] = df.index
 
-    print(f'data total zise : {len(df)}')
+    # print(f'data total zise : {len(df)}')
 
-    # removing real close or smailer valuse
+    # # removing real close or smailer valuse
     df = distance_filter(df)
     print(f'data total after distance_filter : {len(df)}')
 
-    # removing outlayer valuse
-    df = outlier_filter(df)
+    # # removing outlayer valuse
+    # df = outlier_filter(df)
     print(f'data total after outlier_filter : {len(df)}')
     
     

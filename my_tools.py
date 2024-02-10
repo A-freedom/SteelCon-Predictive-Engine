@@ -13,8 +13,8 @@ def std_ep(y_true, y_predictions):
 
 def evaluate_and_plot(X, y, model, data_description):
     # Predictions
-    y_predications = model.predict(X)
-    y_predications = [i[0] for i in y_predications]
+    y_predictions = model.predict(X)
+    y_predictions = [i[0] for i in y_predictions]
 
     # Linear regression
     # reg = LinearRegression().fit(y.reshape(-1, 1), y_predications)
@@ -22,7 +22,7 @@ def evaluate_and_plot(X, y, model, data_description):
     # intercept = reg.intercept_
 
     # Scatter plot
-    plot.scatter(y, y_predications, marker='o', s=5)
+    plot.scatter(y, y_predictions, marker='o', s=5)
 
     # Plot the regression line
     # plt.plot(y, slope*y + intercept, color='red', linestyle='-', linewidth=1)
@@ -37,19 +37,25 @@ def evaluate_and_plot(X, y, model, data_description):
     plot.title(data_description + " vs Predictions")
 
     # Adjust plot limits
-    min_val = min(np.min(y), np.min(y_predications))
-    max_val = max(np.max(y), np.max(y_predications))
+    min_val = min(np.min(y), np.min(y_predictions))
+    max_val = max(np.max(y), np.max(y_predictions))
     plot.xlim(min_val, max_val)
     plot.ylim(min_val, max_val)
     plot.show()
 
     # Calculate errors
-    errors = (y_predications - y) / y * 100
+    errors = (y_predictions - y) / y * 100
     df_error = pd.DataFrame({"error statistics": errors})
-    print(df_error.describe())
-    # Calculate the Pearson correlation coefficient
-    r = np.corrcoef(y, y_predications)[0, 1]
-    print("Pearson correlation coefficient (r):", r)
-    sns.kdeplot(df_error.sort_values("error statistics"), shade=True)
+    
+    
+    sns.kdeplot(df_error.sort_values("error statistics"), fill=True)
     plot.gca().set_title("error distrubation for" + data_description)
     plot.show()
+
+    print(df_error.describe())
+    # Calculate the Pearson correlation coefficient
+    r = np.corrcoef(y, y_predictions)[0, 1]
+    print("r   ", r)
+    # Calculate the mse
+    mse = np.mean(np.square(y - y_predictions))
+    print("mes  ",mse)
