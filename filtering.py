@@ -22,7 +22,7 @@ def outlier_filter(df):
     X = df.iloc[:, :7].values
 
     # Create an instance of the LOF algorithm
-    lof = LocalOutlierFactor(n_neighbors=7)  # Adjust parameters as needed
+    lof = LocalOutlierFactor(n_neighbors=2)  # Adjust parameters as needed
 
     # Fit the LOF model to your data
     lof.fit(X)
