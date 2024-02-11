@@ -16,9 +16,9 @@ X_train, X_test, y_train, y_test, X, y = get_traing_and_testing_data()
 # Model design
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(7, activation='elu'),
-    tf.keras.layers.Dense(25, activation='elu'),
-    tf.keras.layers.Dense(40, activation='elu'),
-    tf.keras.layers.Dense(25, activation='elu'),
+    tf.keras.layers.Dense(8, activation='elu'),
+    tf.keras.layers.Dense(10, activation='elu'),
+    tf.keras.layers.Dense(8, activation='elu'),
     tf.keras.layers.Dense(5, activation='elu'),
     tf.keras.layers.Dense(1, activation='elu')  # Output layer for regression
 ])
@@ -29,7 +29,7 @@ model.compile(optimizer=custom_optimizer,loss='mse', metrics=["mape", "mse"])
 
 # Define callbacks
 # Early stopping callback
-# early_stopping = EarlyStopping(monitor='val_mse', patience=1000, restore_best_weights=True)
+early_stopping = EarlyStopping(monitor='val_mape', patience=50, restore_best_weights=True)
 # Model checkpoint callback
 checkpoint = ModelCheckpoint("my_model/best_model.h5", save_best_only=True)
 # TensorBoard callback for profiling

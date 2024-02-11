@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from filtering import distance_filter
 from filtering import outlier_filter
 
-random_seed = 168
+random_seed = 6518906
 defualt_number_of_parts = 5
 testing_index = 3
 
@@ -18,7 +18,7 @@ def get_data_fram():
     # Choosing only the relevant columns
     df = df[['b (mm)', 'h (mm)', 't (mm)', 'L (mm)', 'fy (MPa)', 'fc (MPa)', 'N Test (kN)']]
 
-    # df = df.loc[df['N Test (kN)'] < 10000]
+    df = df.loc[df['N Test (kN)'] < 10000]
 
     # Check and swap values if 'b (mm)' is less than 'h (mm)'
     mask = df['b (mm)'] < df['h (mm)']
@@ -46,7 +46,7 @@ def get_data_fram():
     df['N Test (kN)'] = pd.DataFrame(scaler.inverse_transform(df.iloc[:, :7].values))[6].values
 
     # Shuffle the DataFrame randomly
-    df = df.sample(frac=1).reset_index(drop=True)
+    df = df.sample(frac=1 ,random_state=random_seed).reset_index(drop=True)
     return df
 
 
