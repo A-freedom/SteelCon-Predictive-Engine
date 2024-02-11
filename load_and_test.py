@@ -10,7 +10,6 @@ from my_tools import evaluate_and_plot
 tf.random.set_seed(random_seed)
 loaded_model = tf.keras.models.load_model('my_model/best_model.h5')
 
-
 X_train, X_test, y_train, y_test ,X , y = get_traing_and_testing_data()
 
 print('+++++ model evaluate +++++')

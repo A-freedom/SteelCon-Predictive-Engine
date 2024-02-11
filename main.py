@@ -10,17 +10,18 @@ from my_tools import evaluate_and_plot
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
 
 # Set a random seed for reproducibility
-# tf.random.set_seed(5619)
+tf.random.set_seed(5619)
 
 # Load the dataset
 X_train, X_test, y_train, y_test, X, y = get_traing_and_testing_data()
 
 # Model design
 model = tf.keras.Sequential([
+    tf.keras.layers.Dense(7, activation='elu'),
+    tf.keras.layers.Dense(40, activation='elu'),
+    tf.keras.layers.Dense(60, activation='elu'),
     tf.keras.layers.Dense(25, activation='elu'),
-    tf.keras.layers.Dense(75, activation='tanh'),
-    tf.keras.layers.Dense(75, activation='tanh'),
-    tf.keras.layers.Dense(25, activation='elu'),
+    tf.keras.layers.Dense(5, activation='elu'),
     tf.keras.layers.Dense(1, activation='elu')  # Output layer for regression
 ])
 
@@ -30,15 +31,15 @@ model.compile(optimizer=custom_optimizer,loss='mse', metrics=["mape", "mse"])
 
 # Define callbacks
 # Early stopping callback
-early_stopping = EarlyStopping(monitor='val_mse', patience=1000, restore_best_weights=True)
+# early_stopping = EarlyStopping(monitor='val_mse', patience=1000, restore_best_weights=True)
 # Model checkpoint callback
 checkpoint = ModelCheckpoint("my_model/best_model.h5", save_best_only=True)
 # TensorBoard callback for profiling
 tensorboard = TensorBoard(log_dir="logs/")
 
 # Train the model
-model.fit(X_train, y_train, epochs=70000, batch_size=len(X_train), verbose=2, validation_data=(X_test, y_test),
-          callbacks=[checkpoint, tensorboard, early_stopping])
+model.fit(X_train, y_train, epochs=7000000, batch_size=len(X_train), verbose=2, validation_data=(X_test, y_test),
+          callbacks=[checkpoint, tensorboard])
 
 # Evaluate the model on testing data
 model.evaluate(X_test, y_test)

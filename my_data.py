@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from filtering import distance_filter
 from filtering import outlier_filter
 
-random_seed = 3783
+random_seed = 168
 defualt_number_of_parts = 5
 testing_index = 2
 
@@ -17,6 +17,8 @@ def get_data_fram():
 
     # Choosing only the relevant columns
     df = df[['b (mm)', 'h (mm)', 't (mm)', 'L (mm)', 'fy (MPa)', 'fc (MPa)', 'N Test (kN)']]
+
+    # df = df.loc[df['N Test (kN)'] < 10000]
 
     # Check and swap values if 'b (mm)' is less than 'h (mm)'
     mask = df['b (mm)'] < df['h (mm)']
