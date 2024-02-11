@@ -7,7 +7,7 @@ from filtering import outlier_filter
 
 random_seed = 168
 defualt_number_of_parts = 5
-testing_index = 2
+testing_index = 3
 
 
 # this funcation is used to do all the prossing of the data
@@ -28,7 +28,7 @@ def get_data_fram():
     scaler = StandardScaler()
     df.iloc[:, :7] = pd.DataFrame(scaler.fit_transform(df.iloc[:, :7].values))
     # Save original index
-    df['original_index'] = df.index
+    # df['original_index'] = df.index
 
     # print(f'data total zise : {len(df)}')
 
