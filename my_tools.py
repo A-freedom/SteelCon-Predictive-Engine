@@ -3,7 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plot
 import numpy as np
 import seaborn as sns
-
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import mean_squared_error
 
 # Define custom metric function
 def std_ep(y_true, y_predictions):
@@ -56,6 +57,13 @@ def evaluate_and_plot(X, y, model, data_description):
     # Calculate the Pearson correlation coefficient
     r = np.corrcoef(y, y_predictions)[0, 1]
     print("r   ", r)
-    # Calculate the mse
-    mse = np.mean(np.square(y - y_predictions))
-    print("mes  ",mse)
+    # Calculate the mse without normalztion
+    mse_without_norm = mean_squared_error(y,y_predictions)
+    print("mse without normalztion  ",mse_without_norm)
+
+    scaler = MinMaxScaler()
+    normailzed_y = np.ravel(scaler.fit_transform(np.ravel(y).reshape(-1, 1)))
+    normailzed_y_predications = np.ravel(scaler.fit_transform(np.ravel(y_predictions).reshape(-1, 1)))
+
+    mse = mean_squared_error(normailzed_y, normailzed_y_predications)
+    print("Mean Squared Error with normlaztion:", mse)
