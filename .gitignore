@@ -1,5 +1,5 @@
-logs
 predicts.cvs
 error.csv
 qodana.yaml
 .idea
+__pycache__
