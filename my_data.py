@@ -11,7 +11,7 @@ testing_index = 3
 
 
 # this funcation is used to do all the prossing of the data
-def get_data_fram():
+def get_data_fram(denormliztion_data=False):
     # Read the data
     df = pd.read_csv('DATA/3208 R_CFST_NM.csv', header=4)
 
@@ -27,27 +27,31 @@ def get_data_fram():
     # Normalize
     scaler = StandardScaler()
     df.iloc[:, :7] = pd.DataFrame(scaler.fit_transform(df.iloc[:, :7].values))
-    # Save original index
+    # Save original index , use this only for depugeing
     # df['original_index'] = df.index
 
-    # print(f'data total zise : {len(df)}')
 
-    # # removing real close or smailer valuse
+    # removing real close or smailer valuse
     print(f'All data before filtering : {len(df)}')
 
+    # the distance_filter tuend to be not usefull 
     # df = distance_filter(df)
-    print(f'data total after distance_filter : {len(df)}')
+    # print(f'Data total after distance_filter : {len(df)}')
 
     # removing outlayer valuse
     df = outlier_filter(df)
     print(f'data total after outlier_filter : {len(df)}')
 
-    # Denormalize the scaled 'N Test (kN)'
-    df['N Test (kN)'] = pd.DataFrame(scaler.inverse_transform(df.iloc[:, :7].values))[6].values
+    if denormliztion_data:
+        # Denormalize the all columns'
+        df.iloc[:, :7] = pd.DataFrame(scaler.inverse_transform(df.iloc[:, :7].values))
+    else:
+        # Denormalize the scaled 'N Test (kN)'
+        df['N Test (kN)'] = pd.DataFrame(scaler.inverse_transform(df.iloc[:, :7].values))[6].values
 
     # Shuffle the DataFrame randomly
     df = df.sample(frac=1 ,random_state=random_seed).reset_index(drop=True)
-    return df
+    return df.iloc[:, :7]
 
 
 def get_data_parts(num_parts=defualt_number_of_parts):
