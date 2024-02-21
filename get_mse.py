@@ -5,7 +5,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 import numpy as np
 
-X_train, X_test, y_train, y_test, X, y = get_traing_and_testing_data()
+X_train, X_test, y_train, y_test, X, y = get_training_and_testing_data()
 
 loaded_model = tf.keras.models.load_model('my_model/best_model.h5')
 

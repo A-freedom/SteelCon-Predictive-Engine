@@ -1,11 +1,14 @@
-#%%
-from my_data import get_data_fram
+# %%
+from my_data import get_data_frame
 import numpy as np
-df = get_data_fram(denormliztion_data=True)
+
+df = get_data_frame(denormalize_data=True)
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # %%
 dete_describe = df.describe()
-#save file
+# save file
 dete_describe.to_csv('DATA/statics_analysis/describe.csv')
 
 # %%
@@ -18,6 +21,11 @@ corr_matrix = df.corr()
 # Drop rows and columns with NaN values
 # corr_matrix = corr_matrix.dropna(axis=0, how='all').dropna(axis=1, how='all')
 
-#save file
-corr_matrix.to_csv('DATA/statics_analysis/corr_matrix.csv')
+# save file
+# corr_matrix.to_csv('DATA/statics_analysis/corr_matrix.csv')
+
+plt.figure(figsize=(8, 6))
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".4f", linewidths=0.5)
+plt.title('Correlation Heatmap')
+plt.show()
 # %%

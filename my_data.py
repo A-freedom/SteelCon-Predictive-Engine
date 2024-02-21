@@ -2,16 +2,15 @@
 import os
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
-from filtering import distance_filter
 from filtering import outlier_filter
 
 random_seed = 6518906
-defualt_number_of_parts = 5
+default_number_of_parts = 5
 testing_index = 3
 
 
-# this funcation is used to do all the prossing of the data
-def get_data_fram(denormliztion_data=False):
+# this function is used to do all the processing of the data
+def get_data_frame(denormalize_data=False):
     # Read the data
     df = pd.read_csv('DATA/3208 R_CFST_NM.csv', header=4)
 
@@ -27,22 +26,20 @@ def get_data_fram(denormliztion_data=False):
     # Normalize
     scaler = StandardScaler()
     df.iloc[:, :7] = pd.DataFrame(scaler.fit_transform(df.iloc[:, :7].values))
-    # Save original index , use this only for depugeing
+    # Save original index , use this only for debugging
     # df['original_index'] = df.index
 
-
-    # removing real close or smailer valuse
     print(f'All data before filtering : {len(df)}')
 
-    # the distance_filter tuend to be not usefull 
+    # the distance_filter tend to be not usefully
     # df = distance_filter(df)
     # print(f'Data total after distance_filter : {len(df)}')
 
-    # removing outlayer valuse
+    # removing outlay values
     df = outlier_filter(df)
     print(f'data total after outlier_filter : {len(df)}')
 
-    if denormliztion_data:
+    if denormalize_data:
         # Denormalize the all columns'
         df.iloc[:, :7] = pd.DataFrame(scaler.inverse_transform(df.iloc[:, :7].values))
     else:
@@ -50,12 +47,12 @@ def get_data_fram(denormliztion_data=False):
         df['N Test (kN)'] = pd.DataFrame(scaler.inverse_transform(df.iloc[:, :7].values))[6].values
 
     # Shuffle the DataFrame randomly
-    df = df.sample(frac=1 ,random_state=random_seed).reset_index(drop=True)
+    df = df.sample(frac=1, random_state=random_seed).reset_index(drop=True)
     return df.iloc[:, :7]
 
 
-def get_data_parts(num_parts=defualt_number_of_parts):
-    df = get_data_fram()
+def get_data_parts(num_parts=default_number_of_parts):
+    df = get_data_frame()
     # Divide the data into parts and store them in an array of pandas DataFrames
     data_parts = []
     part_size = len(df) // num_parts
@@ -68,7 +65,7 @@ def get_data_parts(num_parts=defualt_number_of_parts):
     # Now data_parts is an array containing the divided parts of the DataFrame
 
 
-def get_traing_and_testing_data(num_parts=defualt_number_of_parts):
+def get_training_and_testing_data(num_parts=default_number_of_parts):
     # Assuming you have a function called get_data_parts() that returns a list of data parts
     data_parts = get_data_parts(num_parts=num_parts)
 
@@ -91,7 +88,7 @@ def get_traing_and_testing_data(num_parts=defualt_number_of_parts):
     return X_train, X_test, y_train, y_test, X, y
 
 
-def save_files(num_parts=defualt_number_of_parts, fileName='3208_R_CFST_NM'):
+def save_files(num_parts=default_number_of_parts, fileName='3208_R_CFST_NM'):
     data_parts = get_data_parts(num_parts=num_parts)
     for i, part in enumerate(data_parts):
         part.to_csv(os.path.join('DATA/normalised', f'{fileName}_part_{i + 1}.csv'), index=False)
