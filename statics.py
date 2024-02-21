@@ -1,6 +1,5 @@
 # %%
-from my_data import get_data_frame
-import numpy as np
+from data_preprocessor import get_data_frame
 
 df = get_data_frame(denormalize_data=True)
 import seaborn as sns

@@ -1,11 +1,12 @@
-from sklearn.linear_model import LinearRegression
-import tensorflow as tf
-import pandas as pd
+import pickle
+
 import matplotlib.pyplot as plot
 import numpy as np
+import pandas as pd
 import seaborn as sns
-from sklearn.preprocessing import MinMaxScaler
+import tensorflow as tf
 from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import MinMaxScaler
 
 
 # Define custom metric function
@@ -15,42 +16,60 @@ def std_ep(y_true, y_predictions):
 
 
 def evaluate_and_plot(X, y, model, data_description):
-    # Predictions
-    y_predictions = model.predict(X)
-    y_predictions = [i[0] for i in y_predictions]
+    # Predictions from ANN
+    y_predictions_ann = model.predict(X)
+    y_predictions_ann = [i[0] for i in y_predictions_ann]
 
-    # Linear regression
+    # Predictions hand calculations
+    # denormalized X
+    with open('my_model/data_scaler.pkl', 'rb') as f:
+        scaler = pickle.load(f)
+    X['NAN'] = 0
+    X = pd.DataFrame(scaler.inverse_transform(X), columns=X.columns)
+    # As = 2t*(b+h)
+    area_steel = 2 * X['t (mm)'] * (X['b (mm)'] + X['h (mm)'])
+    # Ag = b * h
+    area_gross = X['b (mm)'] * X['h (mm)']
+    # Ac = Ag - As
+    area_concrete = area_gross - area_steel
+    # Pn = 0.85*Fc*Ac + Fy*Ay
+    y_predictions_aci = (0.85 * X['fc (MPa)'] * area_concrete + X['fy (MPa)'] * area_steel) / 1000
 
-    reg = LinearRegression().fit(y.values.reshape(-1, 1), np.array(y))
-    slope = reg.coef_[0]
-    intercept = reg.intercept_
-    # Plot the regression line
-    plot.plot(y, slope * y + intercept, color='red', linestyle='-', linewidth=1.5)
+    # plot hand calculations
+    plot.scatter(y, y_predictions_aci, marker='^', facecolor='none', edgecolor='blue',
+                 label='Hand Calculation Prediction')
 
-    # Scatter plot
-    plot.scatter(y, y_predictions, marker='o', s=5,)
-
-
+    # plot ANN
+    plot.scatter(y, y_predictions_ann, marker='o', facecolor='none', edgecolor='orange', label='ANN Prediction')
+    plot.legend()
     # Labels and title
     plot.xlabel(data_description)
     plot.ylabel('Prediction')
     plot.title(data_description + " vs Predictions")
-
     # Adjust plot limits
-    min_val = min(np.min(y), np.min(y_predictions))
-    max_val = max(np.max(y), np.max(y_predictions))
-    plot.xlim(min_val, max_val)
-    plot.ylim(min_val, max_val)
+    # min_val = min(np.min(y), np.min(y))
+    # max_val = max(np.max(y), np.max(y))
+    plot.xlim(0, 9000)
+    plot.ylim(0, 9000)
+    # 45 degree line
+    plot.plot(y, y, color='#2ec27eff', linestyle='-.', linewidth=1, label='45-degree Line')
+
     plot.show()
 
+    evaluate(y, y_predictions_ann, data_description)
+    evaluate(y, y_predictions_aci, data_description + ' Hand calculations')
+
+
+def evaluate(y, y_predictions, data_description):
     # Calculate errors
-    errors = (y_predictions - y) / y * 100
+    errors = (np.array(y_predictions) - np.array(y)) / np.array(y) * 100
     df_error = pd.DataFrame({"error statistics": errors})
 
     sns.kdeplot(df_error.sort_values("error statistics"), fill=True)
-    plot.gca().set_title("error distrubation for" + data_description)
+    plot.gca().set_title("error distribution for" + data_description)
     plot.show()
 
+    print(data_description)
     print(df_error.describe())
     # Calculate the Pearson correlation coefficient
     r = np.corrcoef(y, y_predictions)[0, 1]

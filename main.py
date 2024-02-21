@@ -1,10 +1,11 @@
 #%%
-import tensorflow as tf
 import os
+
+import tensorflow as tf
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 os.environ["CUDA_VISIBLE_DEVICES"] = ""  # Limit TensorFlow to CPU only
-from my_data import get_training_and_testing_data
+from data_preprocessor import get_training_and_testing_data
 # from my_data import random_seed
 from my_tools import evaluate_and_plot
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard

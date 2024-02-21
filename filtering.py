@@ -1,6 +1,6 @@
 import numpy as np
-from sklearn.neighbors import LocalOutlierFactor
 from scipy.spatial.distance import cdist
+from sklearn.neighbors import LocalOutlierFactor
 
 
 def distance_filter(df):
@@ -10,7 +10,7 @@ def distance_filter(df):
     distance_threshold = 0.02  # Adjust this threshold based on your data and requirements
 
     # Extract the 6-dimensional X values from the DataFrame
-    X = df.iloc[:, :7].values
+    X = df.values
 
     ary = cdist(X, X, metric='euclidean')
 
@@ -19,7 +19,7 @@ def distance_filter(df):
 
 def outlier_filter(df):
     # Assuming X_columns are the columns containing your features
-    X = df.iloc[:, :7].values
+    X = df.values
 
     # Create an instance of the LOF algorithm
     lof = LocalOutlierFactor(n_neighbors=2)  # Adjust parameters as needed
