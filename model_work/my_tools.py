@@ -22,7 +22,7 @@ def evaluate_and_plot(X, y, model, data_description):
 
     # Predictions hand calculations
     # denormalized X
-    with open('my_model/data_scaler.pkl', 'rb') as f:
+    with open('model_work/my_model/data_scaler.pkl', 'rb') as f:
         scaler = pickle.load(f)
     X['NAN'] = 0
     X = pd.DataFrame(scaler.inverse_transform(X), columns=X.columns)

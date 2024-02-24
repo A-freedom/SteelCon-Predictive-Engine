@@ -5,6 +5,10 @@ import tensorflow as tf
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS  # Import CORS from flask_cors module
 
+loaded_model = tf.keras.models.load_model('../model_work/my_model/best_model.h5')
+with open('../model_work/my_model/data_scaler.pkl', 'rb') as f:
+    scaler = pickle.load(f)
+
 app = Flask(__name__)
 CORS(app)
 
@@ -15,10 +19,6 @@ def index():
 
 
 def predict_with_ann(b, h, t, L, fy, fc):
-    loaded_model = tf.keras.models.load_model('../my_model/best_model.h5')
-    with open('../my_model/data_scaler.pkl', 'rb') as f:
-        scaler = pickle.load(f)
-
     df = pd.DataFrame({
         'b (mm)': [b], 'h (mm)': [h], 't (mm)': [t], 'L (mm)': [L], 'fy (MPa)': [fy], 'fc (MPa)': [fc],
         'N Test (kN)': [0]

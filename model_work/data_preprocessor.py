@@ -24,6 +24,13 @@ class DataPreprocessor:
         self.prepare_data_frame()
 
     def read_file(self):
+        # # Get the current directory of the script
+        # current_directory = os.path.dirname(__file__)
+        #
+        # # Navigate to the directory one level above
+        # parent_directory = os.path.abspath(os.path.join(current_directory, os.pardir))
+        #
+        # file_path = os.path.join(parent_directory, self.csv_file_path)
         # Read the data
         self.df = pd.read_csv(self.csv_file_path, header=self.csv_file_index)
 
@@ -42,7 +49,7 @@ class DataPreprocessor:
         scaler = StandardScaler()
         self.df = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
         # Save the fitted scaler object to a file
-        with open('my_model/data_scaler.pkl', 'wb') as f:
+        with open('model_work/my_model/data_scaler.pkl', 'wb') as f:
             pickle.dump(scaler, f)
         # Save original index , use this only for debugging
         # df['original_index'] = df.index

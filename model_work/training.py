@@ -5,14 +5,14 @@ import tensorflow as tf
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 os.environ["CUDA_VISIBLE_DEVICES"] = ""  # Limit TensorFlow to CPU only
-from data_preprocessor import get_training_and_testing_data
+from data_preprocessor import DataPreprocessor
 # from my_data import random_seed
 from my_tools import evaluate_and_plot
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
 
-
+data_preprocessor = DataPreprocessor()
 # Load the dataset
-X_train, X_test, y_train, y_test, X, y = get_training_and_testing_data()
+X_train, X_test, y_train, y_test, X, y = data_preprocessor.get_training_and_testing_data()
 
 # Model design
 model = tf.keras.Sequential([
