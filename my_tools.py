@@ -33,14 +33,16 @@ def evaluate_and_plot(X, y, model, data_description):
     # Ac = Ag - As
     area_concrete = area_gross - area_steel
     # Pn = 0.85*Fc*Ac + Fy*Ay
-    y_predictions_aci = (0.85 * X['fc (MPa)'] * area_concrete + X['fy (MPa)'] * area_steel) / 1000
+    y_predictions_aci = 0.9 * (0.85 * X['fc (MPa)'] * area_concrete + X['fy (MPa)'] * area_steel) / 1000
 
     # plot hand calculations
     plot.scatter(y, y_predictions_aci, marker='^', facecolor='none', edgecolor='blue',
                  label='Hand Calculation Prediction')
-
     # plot ANN
     plot.scatter(y, y_predictions_ann, marker='o', facecolor='none', edgecolor='orange', label='ANN Prediction')
+    # 45 degree line
+    plot.plot(y, y, color='#2ec27eff', linestyle='-.', linewidth=1, label='45-degree Line')
+
     plot.legend()
     # Labels and title
     plot.xlabel(data_description)
@@ -51,9 +53,6 @@ def evaluate_and_plot(X, y, model, data_description):
     # max_val = max(np.max(y), np.max(y))
     plot.xlim(0, 9000)
     plot.ylim(0, 9000)
-    # 45 degree line
-    plot.plot(y, y, color='#2ec27eff', linestyle='-.', linewidth=1, label='45-degree Line')
-
     plot.show()
 
     evaluate(y, y_predictions_ann, data_description)

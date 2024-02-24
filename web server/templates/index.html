@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SteelCon Predictive Engine</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+            padding-top: 50px;
+        }
+
+        .container {
+            max-width: 500px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        #prediction-result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        #prediction-result span {
+            font-weight: bold;
+        }
+
+        .description {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="description">
+        <p>This is an Artificial Neural Network (ANN) developed by students at the University of Civil Engineering in
+            Basra. It predicts the compressive strength of Rectangular Concrete-Filled Steel Tubes (R_CFST).</p>
+    </div>
+    <form id="prediction-form">
+        <div class="form-group">
+            <label for="b">b (mm):</label>
+            <input type="text" class="form-control" name="b">
+        </div>
+        <div class="form-group">
+            <label for="h">h (mm):</label>
+            <input type="text" class="form-control" name="h">
+        </div>
+        <div class="form-group">
+            <label for="t">t (mm):</label>
+            <input type="text" class="form-control" name="t">
+        </div>
+        <div class="form-group">
+            <label for="L">L (mm):</label>
+            <input type="text" class="form-control" name="L">
+        </div>
+        <div class="form-group">
+            <label for="fy">fy (MPa):</label>
+            <input type="text" class="form-control" name="fy">
+        </div>
+        <div class="form-group">
+            <label for="fc">fc (MPa):</label>
+            <input type="text" class="form-control" name="fc">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Predict</button>
+    </form>
+    <div id="prediction-result"></div>
+</div>
+
+<script>
+    document.getElementById('prediction-form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Collect form data
+        var formData = new FormData(this);
+
+        // Send form data to Flask route using AJAX
+        fetch('/predict', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text()) // Parse response as text
+            .then(result => {
+                // Display prediction result
+                document.getElementById('prediction-result').innerHTML = "<H2> " + result + " KN</H2>";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+</script>
+</body>
+</html>
