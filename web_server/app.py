@@ -3,9 +3,9 @@ import pickle
 import pandas as pd
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS  # Import CORS from flask_cors module
-from keras.models import load_model
+from sklearn.externals import joblib
 
-loaded_model = load_model('../model_work/my_model/best_model.h5')
+loaded_model = joblib.load('../model_work/my_model/best_model.pkl')
 
 with open('../model_work/my_model/data_scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
