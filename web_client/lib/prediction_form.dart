@@ -55,7 +55,7 @@ class _PredictionFormState extends State<PredictionForm> {
               TextFormField(
                 controller: bController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'b (mm)', labelStyle: TextStyles.buttonText1,hintText: '40 < b < 360'),
+                decoration: InputDecoration(labelText: 'bb (mm)', labelStyle: TextStyles.buttonText1,hintText: '40 < b < 360'),
                 validator: (value)=> inputChecker(value,40,360)
               ),
               TextFormField(

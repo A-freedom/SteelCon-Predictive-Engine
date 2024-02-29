@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 
 class PredictionService {
   // The URL of the backend server that hosts the ANN model
-  final String _baseUrl = 'http://localhost:8080/predict';
+  final String _baseUrl = 'http://127.0.0.1:8080/predict';
 
   // A method that takes the input parameters and returns the predicted compressive strength
   Future<String> predict(
