@@ -3,9 +3,10 @@ import pickle
 import pandas as pd
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS  # Import CORS from flask_cors module
-from keras.models import load_model as ld
+from keras.models import load_model
 
-loaded_model = ld('../model_work/my_model/best_model.h5')
+loaded_model = load_model('../model_work/my_model/best_model.h5')
+
 with open('../model_work/my_model/data_scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
