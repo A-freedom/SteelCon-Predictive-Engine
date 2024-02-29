@@ -4,9 +4,9 @@ const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
 const RESOURCES = {
-    "index.html": "e65500fed81e8c87ce960eda628e3ff9",
-    "/": "e65500fed81e8c87ce960eda628e3ff9",
-    "main.dart.js": "9ffd31c6e14f8c9c61e787e721b36869",
+    "index.html": "656574dd32cb08d3d00e4a4c89b0c17d",
+    "/": "656574dd32cb08d3d00e4a4c89b0c17d",
+    "main.dart.js": "b140980b49cf89607851a4523314960e",
     "flutter.js": "c71a09214cb6f5f8996a531350400a9a",
     "canvaskit/canvaskit.wasm": "3d2a2d663e8c5111ac61a46367f751ac",
     "canvaskit/skwasm.js.symbols": "741d50ffba71f89345996b0aa8426af8",
@@ -182,7 +182,6 @@ async function downloadOffline() {
     }
     return contentCache.addAll(resources);
 }
-
 // Attempt to download the resource online before falling back to
 // the offline cache.
 function onlineFirst(event) {

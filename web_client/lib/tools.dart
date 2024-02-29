@@ -1,4 +1,5 @@
 String? inputChecker(value, double min, double max) {
+  return null;
   if (value == null || value.isEmpty) {
     return 'Please enter a value';
   }

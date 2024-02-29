@@ -55,7 +55,7 @@ class _PredictionFormState extends State<PredictionForm> {
               TextFormField(
                 controller: bController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'bb (mm)', labelStyle: TextStyles.buttonText1,hintText: '40 < b < 360'),
+                decoration: InputDecoration(labelText: 'b (mm)', labelStyle: TextStyles.buttonText1,hintText: '40 < b < 360'),
                 validator: (value)=> inputChecker(value,40,360)
               ),
               TextFormField(
@@ -93,14 +93,16 @@ class _PredictionFormState extends State<PredictionForm> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     // Call the prediction service to get the result
-                    double b = double.parse(bController.text);
-                    double h = double.parse(hController.text);
-                    double t = double.parse(tController.text);
-                    double l = double.parse(lController.text);
-                    double fy = double.parse(fyController.text);
-                    double fc = double.parse(fcController.text);
+                    // double b = double.parse(bController.text);
+                    // double h = double.parse(hController.text);
+                    // double t = double.parse(tController.text);
+                    // double l = double.parse(lController.text);
+                    // double fy = double.parse(fyController.text);
+                    // double fc = double.parse(fcController.text);
                     PredictionService predictionService = PredictionService();
-                    String result = await predictionService.predict(b, h, t, l, fy, fc);
+                    // String result = await predictionService.predict(b, h, t, l, fy, fc);
+                    String result = await predictionService.predict(24, 2245, 524, 254, 542, 452);
+
                     setState(() {
                       predictionResult = 'Pc $result KN';
                     });
