@@ -8,8 +8,6 @@ class PredictionService {
   // A method that takes the input parameters and returns the predicted compressive strength
   Future<String> predict(
       double b, double h, double t, double l, double fy, double fc) async {
-    return _baseUrl;
-
     var url = Uri.parse(_baseUrl);
 
     // Define the request body
