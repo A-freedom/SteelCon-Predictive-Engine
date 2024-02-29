@@ -102,7 +102,7 @@ class _PredictionFormState extends State<PredictionForm> {
                     PredictionService predictionService = PredictionService();
                     String result = await predictionService.predict(b, h, t, l, fy, fc);
                     setState(() {
-                      predictionResult = 'Pc \n$result KN';
+                      predictionResult = 'Pc $result KN';
                     });
                   }
                 },

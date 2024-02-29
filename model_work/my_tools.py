@@ -37,9 +37,9 @@ def evaluate_and_plot(X, y, model, data_description):
 
     # plot hand calculations
     plot.scatter(y, y_predictions_aci, marker='^', facecolor='none', edgecolor='blue',
-                 label='Hand Calculation Prediction')
+                 label='Hand Calculation Prediction', s=8)
     # plot ANN
-    plot.scatter(y, y_predictions_ann, marker='o', facecolor='none', edgecolor='orange', label='ANN Prediction')
+    plot.scatter(y, y_predictions_ann, marker='o', facecolor='none', edgecolor='orange', label='ANN Prediction', s=8)
     # 45 degree line
     plot.plot(y, y, color='#2ec27eff', linestyle='-.', linewidth=1, label='45-degree Line')
 

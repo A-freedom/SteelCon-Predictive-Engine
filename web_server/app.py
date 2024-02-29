@@ -9,7 +9,7 @@ loaded_model = tf.keras.models.load_model('../model_work/my_model/best_model.h5'
 with open('../model_work/my_model/data_scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='static')
 CORS(app)
 
 
