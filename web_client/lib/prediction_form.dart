@@ -101,8 +101,10 @@ class _PredictionFormState extends State<PredictionForm> {
                     double fc = double.parse(fcController.text);
                     PredictionService predictionService = PredictionService();
                     String result = await predictionService.predict(b, h, t, l, fy, fc);
+                    // String result = await predictionService.predict(24, 2245, 524, 254, 542, 452);
+
                     setState(() {
-                      predictionResult = 'Pc \n$result KN';
+                      predictionResult = 'Pc $result KN';
                     });
                   }
                 },

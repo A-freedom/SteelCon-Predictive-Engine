@@ -1,0 +1,27 @@
+DATA
+README.md
+# Ignore version control files and directories
+.git
+.gitignore
+.dockerignore
+# Ignore Python-related files and directories
+model_work/__pycache__/
+web_server/__pycache__/
+
+# Ignore Flutter-related files and directories
+web_client/.dart_tool/
+#web_client/build/
+web_client/web_client.iml
+
+# Ignore unnecessary files and directories
+node_modules/
+*.log
+*.sqlite
+*.db
+*.xlsx
+*.drawio
+*.png
+
+# Ignore Docker-related files and directories
+Dockerfile
+docker-compose.yml
