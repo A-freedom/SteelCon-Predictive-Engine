@@ -1,4 +1,5 @@
 qodana.yaml
+.venv
 .idea
 __pycache__
 web_server/static/web/*
