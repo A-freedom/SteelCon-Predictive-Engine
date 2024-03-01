@@ -17,4 +17,4 @@ COPY web_client/build/web web_server/static/web
 EXPOSE 8080
 
 # Run app.py when the container launches
-CMD ["python", "web_server/app.py"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "web_server.app:app"]
