@@ -1,4 +1,4 @@
 qodana.yaml
 .idea
 __pycache__
-web_server/static/web
+web_server/static/web/*
