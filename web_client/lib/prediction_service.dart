@@ -27,7 +27,7 @@ class PredictionService {
     );
 
     if (response.statusCode == 200) {
-      return num.parse(response.body).toString();
+      return num.parse(response.body).toInt().toString();
     } else {
       return ('Error ${response.statusCode} .');
     }
