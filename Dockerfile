@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Install any needed packages specified in all_requirements.txt
+# Install any needed packages specified in requirements.txt
 RUN pip3 install --no-cache-dir -r server_requiremnets
 
 # Copy the built Flutter web app to the web_server/static directory
