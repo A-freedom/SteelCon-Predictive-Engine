@@ -17,7 +17,7 @@ def std_ep(y_true, y_predictions):
 
 def evaluate_and_plot(X, y, model, data_description):
     # Predictions from ANN
-    y_predictions_ann = model.predict(X)
+    y_predictions_ann = model.predict(X) * 0.9
     y_predictions_ann = [i[0] for i in y_predictions_ann]
 
     # Predictions hand calculations
@@ -33,7 +33,7 @@ def evaluate_and_plot(X, y, model, data_description):
     # Ac = Ag - As
     area_concrete = area_gross - area_steel
     # Pn = 0.85*Fc*Ac + Fy*Ay
-    y_predictions_aci = 0.9 * (0.85 * X['fc (MPa)'] * area_concrete + X['fy (MPa)'] * area_steel) / 1000
+    y_predictions_aci =0.85*0.75* (0.85 * X['fc (MPa)'] * area_concrete + X['fy (MPa)'] * area_steel) / 1000
 
     # plot hand calculations
     plot.scatter(y, y_predictions_aci, marker='^', facecolor='none', edgecolor='blue',

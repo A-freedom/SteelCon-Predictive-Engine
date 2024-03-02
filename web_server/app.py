@@ -66,7 +66,7 @@ def predict():
     prediction_params = {param: float(data[param]) for param in param_ranges.keys()}
 
     # Perform prediction
-    prediction = predict_with_ann(**prediction_params)
+    prediction = predict_with_ann(**prediction_params) * 0.9
 
     return str(prediction), 200
 

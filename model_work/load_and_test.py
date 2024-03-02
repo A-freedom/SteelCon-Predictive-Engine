@@ -16,8 +16,8 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test, X, y = data_preprocessor.get_training_and_testing_data()
 
     print('+++++ model evaluate +++++')
-    loaded_model.evaluate(X_test, y_test)
+    # loaded_model.evaluate(X_test, y_test)
 
-    evaluate_and_plot(X_test, y_test, loaded_model, 'test data')
+    # evaluate_and_plot(X_test, y_test, loaded_model, ' test data without factors')
+    evaluate_and_plot(X, y, loaded_model, ' All data with factors')
 
-    evaluate_and_plot(X, y, loaded_model, 'All data')
