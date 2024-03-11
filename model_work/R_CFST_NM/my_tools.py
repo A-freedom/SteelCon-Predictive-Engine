@@ -15,28 +15,37 @@ def std_ep(y_true, y_predictions):
     return tf.keras.backend.std(error_percentage)
 
 
-def evaluate_and_plot(X, y, model, data_description):
+def evaluate_and_plot(x, y, model, data_description):
     # Predictions from ANN
-    y_predictions_ann = model.predict(X) * 0.9
+    y_predictions_ann = model.predict(x)
     y_predictions_ann = [i[0] for i in y_predictions_ann]
 
     # Predictions hand calculations
     # denormalized X
-    with open('model_work/my_model/data_scaler.pkl', 'rb') as f:
+    with open('model_work/R_CFST_NM/my_model/data_scaler.pkl', 'rb') as f:
         scaler = pickle.load(f)
-    X['NAN'] = 0
-    X = pd.DataFrame(scaler.inverse_transform(X), columns=X.columns)
-    # As = 2t*(b+h)
-    area_steel = 2 * X['t (mm)'] * (X['b (mm)'] + X['h (mm)'])
-    # Ag = b * h
-    area_gross = X['b (mm)'] * X['h (mm)']
-    # Ac = Ag - As
-    area_concrete = area_gross - area_steel
-    # Pn = 0.85*Fc*Ac + Fy*Ay
-    y_predictions_aci =0.85*0.75* (0.85 * X['fc (MPa)'] * area_concrete + X['fy (MPa)'] * area_steel) / 1000
+    x['NAN'] = 0
+    x = pd.DataFrame(scaler.inverse_transform(x), columns=x.columns)
 
+    # Ag = b * h
+    area_gross = x['b (mm)'] * x['h (mm)']
+    # Ac = Ag - As
+    area_concrete = (x['b (mm)'] - 2 * x['t (mm)']) * (x['h (mm)'] - 2 * x['t (mm)'])
+    # As = 2t*(b+h)
+    area_steel = area_gross - area_concrete
+
+    # Pn = 0.85*Fc*Ac + Fy*Ay
+    y_predictions_hand_compression = (0.85 * x['fc (MPa)'] * area_concrete + x['fy (MPa)'] * area_steel) / 1000
+
+    # Check for buckling
+    I = x['h (mm)'] * np.power(x['b (mm)'], 3) / 12
+    Ec = 4700 * np.sqrt(x['fy (MPa)'])
+    Es = 2E5
+    Eavg = (Ec * area_concrete + Es * area_steel) / area_gross
+    y_predictions_hand_buckling = pow(3.14159, 2) * Eavg * I / (4 * np.power(x['L (mm)'], 2)) * 0.9
+    y_predictions_hand = np.minimum(y_predictions_hand_compression, y_predictions_hand_buckling)
     # plot hand calculations
-    plot.scatter(y, y_predictions_aci, marker='^', facecolor='none', edgecolor='blue',
+    plot.scatter(y, y_predictions_hand, marker='^', facecolor='none', edgecolor='blue',
                  label='Hand Calculation Prediction', s=8)
     # plot ANN
     plot.scatter(y, y_predictions_ann, marker='o', facecolor='none', edgecolor='orange', label='ANN Prediction', s=8)
@@ -56,7 +65,7 @@ def evaluate_and_plot(X, y, model, data_description):
     plot.show()
 
     evaluate(y, y_predictions_ann, data_description)
-    evaluate(y, y_predictions_aci, data_description + ' Hand calculations')
+    evaluate(y, y_predictions_hand, data_description + ' Hand calculations')
 
 
 def evaluate(y, y_predictions, data_description):

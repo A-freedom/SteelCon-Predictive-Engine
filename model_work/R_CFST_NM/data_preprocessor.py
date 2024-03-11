@@ -49,7 +49,7 @@ class DataPreprocessor:
         scaler = StandardScaler()
         self.df = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
         # Save the fitted scaler object to a file
-        with open('model_work/my_model/data_scaler.pkl', 'wb') as f:
+        with open('model_work/R_CFST_NM/my_model/data_scaler.pkl', 'wb') as f:
             pickle.dump(scaler, f)
         # Save original index , use this only for debugging
         # df['original_index'] = df.index
