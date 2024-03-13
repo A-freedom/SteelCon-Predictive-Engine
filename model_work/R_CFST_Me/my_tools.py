@@ -17,31 +17,31 @@ def std_ep(y_true, y_predictions):
 
 def evaluate_and_plot(X, y, model, data_description):
     # Predictions from ANN
-    y_predictions_ann = model.predict(X) * 0.9
+    y_predictions_ann = model.predict(X)
     y_predictions_ann = [i[0] for i in y_predictions_ann]
 
     # Predictions hand calculations
     # denormalized X
-    with open('model_work/my_model/data_scaler.pkl', 'rb') as f:
+    with open('model_work/R_CFST_Me/my_model/data_scaler.pkl', 'rb') as f:
         scaler = pickle.load(f)
     X['NAN'] = 0
-    X = pd.DataFrame(scaler.inverse_transform(X), columns=X.columns)
+    # X = pd.DataFrame(scaler.inverse_transform(X), columns=X.columns)
     # As = 2t*(b+h)
-    area_steel = 2 * X['t (mm)'] * (X['b (mm)'] + X['h (mm)'])
+    # area_steel = 2 * X['t (mm)'] * (X['b (mm)'] + X['h (mm)'])
     # Ag = b * h
-    area_gross = X['b (mm)'] * X['h (mm)']
+    # area_gross = X['b (mm)'] * X['h (mm)']
     # Ac = Ag - As
-    area_concrete = area_gross - area_steel
+    # area_concrete = area_gross - area_steel
     # Pn = 0.85*Fc*Ac + Fy*Ay
-    y_predictions_aci =0.85*0.75* (0.85 * X['fc (MPa)'] * area_concrete + X['fy (MPa)'] * area_steel) / 1000
+    # y_predictions_aci =0.85*0.75* (0.85 * X['fc (MPa)'] * area_concrete + X['fy (MPa)'] * area_steel) / 1000
 
     # plot hand calculations
-    plot.scatter(y, y_predictions_aci, marker='^', facecolor='none', edgecolor='blue',
-                 label='Hand Calculation Prediction', s=8)
+    # plot.scatter(y, y_predictions_aci, marker='^', facecolor='none', edgecolor='blue',
+    #              label='Hand Calculation Prediction', s=8)
     # plot ANN
     plot.scatter(y, y_predictions_ann, marker='o', facecolor='none', edgecolor='orange', label='ANN Prediction', s=8)
     # 45 degree line
-    plot.plot(y, y, color='#2ec27eff', linestyle='-.', linewidth=1, label='45-degree Line')
+    plot.plot([0,7000], [0,7000], color='#2ec27eff', linestyle='-.', linewidth=1, label='45-degree Line')
 
     plot.legend()
     # Labels and title
@@ -51,12 +51,12 @@ def evaluate_and_plot(X, y, model, data_description):
     # Adjust plot limits
     # min_val = min(np.min(y), np.min(y))
     # max_val = max(np.max(y), np.max(y))
-    plot.xlim(0, 9000)
-    plot.ylim(0, 9000)
+    plot.xlim(0, 7000)
+    plot.ylim(0, 7000)
     plot.show()
 
     evaluate(y, y_predictions_ann, data_description)
-    evaluate(y, y_predictions_aci, data_description + ' Hand calculations')
+    # evaluate(y, y_predictions_aci, data_description + ' Hand calculations')
 
 
 def evaluate(y, y_predictions, data_description):

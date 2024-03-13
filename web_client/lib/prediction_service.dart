@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 
 class PredictionService {
   // The URL of the backend server that hosts the ANN model
-  final String _baseUrl = '${window.location.href}predict';
+  final String _baseUrl = '${window.location.href}predict_R_CFST';
+  // final String _baseUrl = 'http://127.0.0.1:8080/predict';
   // A method that takes the input parameters and returns the predicted compressive strength
   Future<String> predict(
       double b, double h, double t, double l, double fy, double fc) async {
@@ -27,9 +28,9 @@ class PredictionService {
     );
 
     if (response.statusCode == 200) {
-      return num.parse(response.body).toInt().toString();
+      return response.body.replaceAll("'", '"');
     } else {
-      return ('Error ${response.statusCode} .');
+      return ('Error ${response.statusCode}.');
     }
   }
 }
