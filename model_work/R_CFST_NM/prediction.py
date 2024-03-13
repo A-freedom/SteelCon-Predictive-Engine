@@ -55,13 +55,11 @@ def predict_aisc(x, dont_use_factors=False):
     x.loc[x['classification'] == 'slender', 'Pno (KN)'] = (x['Fcr (MPa)'] * x['As (mm)']
                                                            + 0.7 * x['fc (MPa)'] * x['Ac (mm)']) / 1E3
 
-    x.to_csv('DATA/3208 R_CFST_NM_AISC.csv')
     if dont_use_factors:
         return x['Pno (KN)']
     x['Pno/Pe'] = x['Pno (KN)'] / x['Pe (KN)']
     x.loc[x['Pno/Pe'] <= 2.25, 'Pn (KN)'] = x['Pno (KN)'] * 0.658 ** x['Pno/Pe']
     x.loc[x['Pno/Pe'] > 2.25, 'Pn (KN)'] = 0.877 * x['Pe (KN)']
-    x.to_csv('DATA/3208 R_CFST_NM_AISC.csv')
     return x['Pn (KN)'] * 0.75
 
 
