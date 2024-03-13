@@ -1,94 +1,91 @@
 import pickle
-
-import matplotlib.pyplot as plot
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import tensorflow as tf
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
+from model_work.R_CFST_NM.prediction import predict_hand, predict_aisc
 
 
 # Define custom metric function
-def std_ep(y_true, y_predictions):
+def std_error_percentage(y_true, y_predictions):
     error_percentage = (y_true - y_predictions) / y_true * 100
     return tf.keras.backend.std(error_percentage)
 
 
-def evaluate_and_plot(x, y, model, data_description):
-    # Predictions from ANN
-    y_predictions_ann = model.predict(x)
-    y_predictions_ann = [i[0] for i in y_predictions_ann]
+def load_scaler(file_path='model_work/R_CFST_NM/my_model/data_scaler.pkl'):
+    with open(file_path, 'rb') as file:
+        return pickle.load(file)
 
-    # Predictions hand calculations
-    # denormalized X
-    with open('model_work/R_CFST_NM/my_model/data_scaler.pkl', 'rb') as f:
-        scaler = pickle.load(f)
+
+def denormalize_data(x, scaler):
     x['NAN'] = 0
-    x = pd.DataFrame(scaler.inverse_transform(x), columns=x.columns)
-
-    # Ag = b * h
-    area_gross = x['b (mm)'] * x['h (mm)']
-    # Ac = Ag - As
-    area_concrete = (x['b (mm)'] - 2 * x['t (mm)']) * (x['h (mm)'] - 2 * x['t (mm)'])
-    # As = 2t*(b+h)
-    area_steel = area_gross - area_concrete
-
-    # Pn = 0.85*Fc*Ac + Fy*Ay
-    y_predictions_hand_compression = (0.85 * x['fc (MPa)'] * area_concrete + x['fy (MPa)'] * area_steel) / 1000
-
-    # Check for buckling
-    I = x['h (mm)'] * np.power(x['b (mm)'], 3) / 12
-    Ec = 4700 * np.sqrt(x['fy (MPa)'])
-    Es = 2E5
-    Eavg = (Ec * area_concrete + Es * area_steel) / area_gross
-    y_predictions_hand_buckling = pow(3.14159, 2) * Eavg * I / (4 * np.power(x['L (mm)'], 2)) * 0.9
-    y_predictions_hand = np.minimum(y_predictions_hand_compression, y_predictions_hand_buckling)
-    # plot hand calculations
-    plot.scatter(y, y_predictions_hand, marker='^', facecolor='none', edgecolor='blue',
-                 label='Hand Calculation Prediction', s=8)
-    # plot ANN
-    plot.scatter(y, y_predictions_ann, marker='o', facecolor='none', edgecolor='orange', label='ANN Prediction', s=8)
-    # 45 degree line
-    plot.plot(y, y, color='#2ec27eff', linestyle='-.', linewidth=1, label='45-degree Line')
-
-    plot.legend()
-    # Labels and title
-    plot.xlabel(data_description)
-    plot.ylabel('Prediction')
-    plot.title(data_description + " vs Predictions")
-    # Adjust plot limits
-    # min_val = min(np.min(y), np.min(y))
-    # max_val = max(np.max(y), np.max(y))
-    plot.xlim(0, 9000)
-    plot.ylim(0, 9000)
-    plot.show()
-
-    evaluate(y, y_predictions_ann, data_description)
-    evaluate(y, y_predictions_hand, data_description + ' Hand calculations')
+    return pd.DataFrame(scaler.inverse_transform(x), columns=x.columns)
 
 
-def evaluate(y, y_predictions, data_description):
-    # Calculate errors
-    errors = (np.array(y_predictions) - np.array(y)) / np.array(y) * 100
-    df_error = pd.DataFrame({"error statistics": errors})
+def plot_predictions(y_true, y_predictions, label, marker, edgecolor, data_description):
+    plt.scatter(y_true, y_predictions, marker=marker, facecolor='none', edgecolor=edgecolor, label=label, s=12, alpha=.85)
+    evaluate_errors(y_true, y_predictions, data_description)
 
-    sns.kdeplot(df_error.sort_values("error statistics"), fill=True)
-    plot.gca().set_title("error distribution for" + data_description)
-    plot.show()
+
+
+def evaluate_errors(y_true, y_predictions, data_description):
+    errors = (y_predictions - y_true) / y_true * 100
+    df_error = pd.DataFrame({"Error Statistics": errors})
 
     print(data_description)
     print(df_error.describe())
-    # Calculate the Pearson correlation coefficient
-    r = np.corrcoef(y, y_predictions)[0, 1]
+
+    r = np.corrcoef(y_true, y_predictions)[0, 1]
     print("R2   ", r)
-    # Calculate the mse without normalization
-    mse_without_norm = mean_squared_error(y, y_predictions)
-    print("Mean Squared Error without normalization  ", mse_without_norm)
+
+    mae = np.mean(np.abs(y_predictions - y_true))
+    print("Mean Absolute Error (MAE):", mae)
+
+    root_mse_without_norm = np.sqrt(mean_squared_error(y_true, y_predictions))
+    print("Root Mean Squared Error Without Normalization  ", root_mse_without_norm)
 
     scaler = MinMaxScaler()
-    normalized_y = np.ravel(scaler.fit_transform(np.ravel(y).reshape(-1, 1)))
-    normalized_y_predications = np.ravel(scaler.fit_transform(np.ravel(y_predictions).reshape(-1, 1)))
+    normalized_y = scaler.fit_transform(np.array(y_true).reshape(-1, 1)).ravel()
+    normalized_y_predictions = scaler.fit_transform(np.array(y_predictions).reshape(-1, 1)).ravel()
 
-    mse = mean_squared_error(normalized_y, normalized_y_predications)
-    print("Mean Squared Error with normalization:", mse)
+    root_mse_with_norm = np.sqrt(mean_squared_error(normalized_y, normalized_y_predictions))
+    print("Root Mean Squared Error With Normalization:", root_mse_with_norm)
+
+
+
+def evaluate_and_plot(x_data, y_data, model, data_description):
+    y_predictions_ann = model.predict(x_data)*0.75
+    y_predictions_ann = y_predictions_ann.ravel()
+
+    scaler = load_scaler()
+    x_denormalized = denormalize_data(x_data, scaler)
+
+    y_predictions_aisc = predict_aisc(x_denormalized)
+    y_predictions_hand = predict_hand(x_denormalized)
+
+    plt.figure()
+    ax = plt.gca()
+
+    ax.set_axisbelow(True)
+    ax.grid(True, which='both', linestyle=':', linewidth=0.8, color='gray', alpha=0.9)
+    ax.minorticks_on()
+    ax.grid(True, which='minor', linestyle=':', linewidth=0.5, color='gray', alpha=0.2)
+
+    plot_predictions(y_data, y_predictions_aisc, 'AISC calculation', '^', 'blue', 'AISC')
+    plot_predictions(y_data, y_predictions_hand, 'Hand calculation', 'v', 'red', 'Hand')
+    plot_predictions(y_data, y_predictions_ann, 'ANN Prediction', 'o', 'orange', 'ANN')
+
+    ax.plot([0, 9000], [0, 9000], color='#2ec27eff', linestyle='-.', linewidth=1.5, label='45-degree Line', alpha=.85)
+
+    ax.legend()
+
+    ax.set_xlabel(data_description)
+    ax.set_ylabel('Prediction')
+    ax.set_title(data_description + " vs Predictions")
+
+    ax.set_xlim(0, 9000)
+    ax.set_ylim(0, 9000)
+    plt.show()

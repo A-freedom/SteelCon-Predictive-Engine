@@ -19,7 +19,7 @@ if __name__ == '__main__':
     # loaded_model.evaluate(X_test, y_test)
 
     # evaluate_and_plot(X_test, y_test, loaded_model, ' test data without factors')
-    evaluate_and_plot(X, y, loaded_model, ' All data without factors')
+    evaluate_and_plot(X, y, loaded_model, ' All data with factors')
 
 
 

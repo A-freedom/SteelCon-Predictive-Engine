@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:unnames/tools.dart';
 import 'constants.dart';
@@ -12,24 +13,20 @@ class PredictionForm extends StatefulWidget {
 
 class _PredictionFormState extends State<PredictionForm> {
   final _formKey = GlobalKey<FormState>();
+  // final TextEditingController bController = TextEditingController(text: '200');
+  // final TextEditingController hController = TextEditingController(text: '200');
+  // final TextEditingController tController = TextEditingController(text: '5');
+  // final TextEditingController lController = TextEditingController(text: '2000');
+  // final TextEditingController fyController = TextEditingController(text: '400');
+  // final TextEditingController fcController = TextEditingController(text: '30');
+
   final TextEditingController bController = TextEditingController();
   final TextEditingController hController = TextEditingController();
   final TextEditingController tController = TextEditingController();
   final TextEditingController lController = TextEditingController();
   final TextEditingController fyController = TextEditingController();
   final TextEditingController fcController = TextEditingController();
-  String predictionResult = '';
-
-  @override
-  void dispose() {
-    bController.dispose();
-    hController.dispose();
-    tController.dispose();
-    lController.dispose();
-    fyController.dispose();
-    fcController.dispose();
-    super.dispose();
-  }
+  Map<String, dynamic> predictionResult = {};
 
   @override
   Widget build(BuildContext context) {
@@ -55,38 +52,62 @@ class _PredictionFormState extends State<PredictionForm> {
               TextFormField(
                 controller: bController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'b (mm)', labelStyle: TextStyles.buttonText1,hintText: '40 < b < 360'),
-                validator: (value)=> inputChecker(value,40,360)
+                decoration: InputDecoration(
+                  labelText: 'b (mm)',
+                  labelStyle: TextStyles.buttonText1,
+                  hintText: '40 < b < 360',
+                ),
+                validator: (value) => inputChecker(value, 40, 360),
               ),
               TextFormField(
                 controller: hController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'h (mm)', labelStyle: TextStyles.buttonText1,hintText: '40 < h < 360'),
-                validator: (value) => inputChecker(value,40,360)
+                decoration: InputDecoration(
+                  labelText: 'h (mm)',
+                  labelStyle: TextStyles.buttonText1,
+                  hintText: '40 < h < 360',
+                ),
+                validator: (value) => inputChecker(value, 40, 360),
               ),
               TextFormField(
                 controller: tController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 't (mm)', labelStyle: TextStyles.buttonText1,hintText: '0.7 < t < 15'),
-                validator: (value)=> inputChecker(value,0.7,15),
+                decoration: InputDecoration(
+                  labelText: 't (mm)',
+                  labelStyle: TextStyles.buttonText1,
+                  hintText: '0.7 < t < 15',
+                ),
+                validator: (value) => inputChecker(value, 0.7, 15),
               ),
               TextFormField(
                 controller: lController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'L (mm)', labelStyle: TextStyles.buttonText1,hintText: '100 < L < 4500'),
-                validator: (value)=> inputChecker(value,100,4500),
+                decoration: InputDecoration(
+                  labelText: 'L (mm)',
+                  labelStyle: TextStyles.buttonText1,
+                  hintText: '100 < L < 4500',
+                ),
+                validator: (value) => inputChecker(value, 100, 4500),
               ),
               TextFormField(
                 controller: fyController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'fy (MPa)', labelStyle: TextStyles.buttonText1,hintText: '115 < fy < 835'),
-                validator: (value) => inputChecker(value,115,835)
+                decoration: InputDecoration(
+                  labelText: 'fy (MPa)',
+                  labelStyle: TextStyles.buttonText1,
+                  hintText: '115 < fy < 835',
+                ),
+                validator: (value) => inputChecker(value, 115, 835),
               ),
               TextFormField(
                 controller: fcController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'fc (MPa)', labelStyle: TextStyles.buttonText1,hintText: '10 < fc < 160'),
-                validator: (value) => inputChecker(value,10,160)
+                decoration: InputDecoration(
+                  labelText: 'fc (MPa)',
+                  labelStyle: TextStyles.buttonText1,
+                  hintText: '10 < fc < 160',
+                ),
+                validator: (value) => inputChecker(value, 10, 160),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
@@ -100,25 +121,52 @@ class _PredictionFormState extends State<PredictionForm> {
                     double fy = double.parse(fyController.text);
                     double fc = double.parse(fcController.text);
                     PredictionService predictionService = PredictionService();
-                    String result = await predictionService.predict(b, h, t, l, fy, fc);
-                    // String result = await predictionService.predict(24, 2245, 524, 254, 542, 452);
-
+                    String result =
+                    await predictionService.predict(b, h, t, l, fy, fc);
                     setState(() {
-                      predictionResult = 'Pc $result KN';
+                      predictionResult = jsonDecode(result);
                     });
                   }
                 },
-                child: Text('Predict', style: TextStyles.h1),
+                child: Text('Predict', style: TextStyles.h2),
               ),
               const SizedBox(height: 20),
-              Center(child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(predictionResult, style: TextStyles.result),
-              )),
+              // Conditionally render DataTable based on data availability
+              if (predictionResult.isNotEmpty)
+                Center(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: DataTable(
+                      headingRowColor: MaterialStateColor.resolveWith(
+                              (states) => MyColors.background),
+                      columns: const [
+                        DataColumn(
+                          label: Text('Method',style:TextStyle(fontFamily: Fonts.raleway,fontSize: 15,color: Color(0xFF5E35B1))),
+                        ),
+                        DataColumn(
+                          label:
+                          Text('ΦPn',style: TextStyle(fontFamily: Fonts.raleway,fontSize: 15,color: Color(0xFF5E35B1))),
+                        ),
+                      ],
+                      rows: resultRows(),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  List<DataRow> resultRows() {
+    return predictionResult.entries.map((entry) {
+      return DataRow(
+        cells: [
+          DataCell(Text(entry.key)),
+          DataCell(Text('${entry.value} KN')),
+        ],
+      );
+    }).toList();
   }
 }
