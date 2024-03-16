@@ -58,7 +58,7 @@ def predict():
     prediction = {
         'ANN': int(predict_ann(df)),
         'ASIC': int(predict_aisc(df).loc[0]),
-        'Hand Calculation': int(predict_hand(df).loc[0])
+        # 'Hand Calculation': int(predict_hand(df).loc[0])
     }
 
     return str(prediction), 200
