@@ -16,5 +16,8 @@ COPY web_client/build/web web_server/static/web
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
+# Set PYTHONPATH to the current working directory
+ENV PYTHONPATH=/app
+
 # Run app.py when the container launches
 CMD ["python", "web_server/app.py"]
