@@ -26,7 +26,7 @@ cd SteelCon-Predictive-Engine
 
 ```bash
 docker build -t steel_concrete .
-docker run -p 80:8080 steel_concrete
+docker run -p 80:80 steel_concrete
 ```
 
 Replace 80 with the desired port number. The application will be accessible at http://localhost:80.

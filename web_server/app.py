@@ -1,13 +1,12 @@
 import pickle
 
+import pandas as pd
 import tensorflow as tf
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS  # Import CORS from flask_cors module
-import sys
-sys.path.append('model_work/R_CFST_NM')
-from prediction import *
-loaded_model = tf.keras.models.load_model('model_work/R_CFST_NM/my_model/best_model.h5')
-with open('model_work/R_CFST_NM/my_model/data_scaler.pkl', 'rb') as f:
+
+loaded_model = tf.keras.models.load_model('model_work/my_model/best_model.h5')
+with open('model_work/my_model/data_scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
 app = Flask(__name__, static_url_path='', static_folder='static')
@@ -19,7 +18,20 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/predict_R_CFST', methods=['POST'])
+def predict_with_ann(b, h, t, L, fy, fc):
+    df = pd.DataFrame({
+        'b (mm)': [b], 'h (mm)': [h], 't (mm)': [t], 'L (mm)': [L], 'fy (MPa)': [fy], 'fc (MPa)': [fc],
+        'N Test (kN)': [0]
+    })
+    # Check and swap values if 'b (mm)' is less than 'h (mm)'
+    mask = df['b (mm)'] < df['h (mm)']
+    df.loc[mask, ['b (mm)', 'h (mm)']] = df.loc[mask, ['h (mm)', 'b (mm)']].values
+
+    scaled_df = scaler.transform(df)
+    return loaded_model.predict(scaled_df[:, :-1])[0][0]
+
+
+@app.route('/predict', methods=['POST'])
 def predict():
     data = request.form
 
@@ -54,16 +66,11 @@ def predict():
     prediction_params = {param: float(data[param]) for param in param_ranges.keys()}
 
     # Perform prediction
-    df = create_data_frame(**prediction_params)
-    prediction = {
-        'ANN': int(predict_ann(df)),
-        'ASIC': int(predict_aisc(df).loc[0]),
-        'Hand Calculation': int(predict_hand(df).loc[0])
-    }
+    prediction = predict_with_ann(**prediction_params) * 0.9
 
     return str(prediction), 200
 
 
 if __name__ == '__main__':
     # Run the app on port 80 and make it accessible on LAN IP
-    app.run(host='0.0.0.0', port=8080, debug=False)
+    app.run(host='0.0.0.0', port=80, debug=False)
