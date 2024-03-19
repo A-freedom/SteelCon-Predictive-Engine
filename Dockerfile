@@ -23,5 +23,5 @@ EXPOSE 8080
 # Set PYTHONPATH to the current working directory
 ENV PYTHONPATH=/app
 
-# Run app.py when the container launches
+# Run app.py when the container launchese
 CMD ["python", "web_server/app.py"]
