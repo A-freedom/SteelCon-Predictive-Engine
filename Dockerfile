@@ -11,8 +11,11 @@ COPY . /app
 RUN pip3 install --no-cache-dir -r server_requiremnets
 
 # Copy the built Flutter web app to the web_server/static directory
-COPY web_client/build/web web_server/static/web
-COPY web_client/build/web web_server/static
+RUN mkdir web_server/static
+RUN cp web_client/build/web/* web_server/static -rlf
+RUN cp web_client/build/web web_server/static -rlf
+#COPY web_client/build/web web_server/static/web
+#COPY web_client/build/web web_server/static
 
 
 # Make port 8080 available to the world outside this container

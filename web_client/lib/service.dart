@@ -6,16 +6,16 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class PredictionService {
-  // The URL of the backend server that hosts the ANN model
-  final String _baseUrlPredict = '${getUrl()}/predict_R_CFST';
-  final String _baseUrlDesign = '${getUrl()}/design_R_CFST';
-  // final String _baseUrlPredict = 'http://127.0.0.1:8080/predict_R_CFST';
-  // final String _baseUrlDesign = 'http://127.0.0.1:8080/design_R_CFST';
-
   // A method that takes the input parameters and returns the predicted compressive strength
   Future<String> predictRHSS(
       double b, double h, double t, double l, double fy, double fc) async {
-    var url = Uri.parse(_baseUrlPredict);
+    String baseUrlPredict;
+    if (kDebugMode) {
+      baseUrlPredict = 'http://127.0.0.1:8080/predict_R_CFST';
+    } else {
+      baseUrlPredict = '${getUrl()}/predict_R_CFST';
+    }
+    var url = Uri.parse(baseUrlPredict);
 
     // Define the request body
     var requestBody = {
@@ -40,15 +40,20 @@ class PredictionService {
     }
   }
 
-
   Future<String?> designRHSS(Map<String, dynamic> jsonFilters) async {
-    print(_baseUrlDesign);
+    String baseUrlDesign;
+    if (kDebugMode) {
+      baseUrlDesign = 'http://127.0.0.1:8080/design_R_CFST';
+    } else {
+      baseUrlDesign = '${getUrl()}/design_R_CFST';
+    }
+
     // Convert jsonFilters to JSON string
     String jsonString = jsonEncode(jsonFilters);
 
     // Send a POST request with JSON body
     http.Response response = await http.post(
-      Uri.parse(_baseUrlDesign),
+      Uri.parse(baseUrlDesign),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -65,10 +70,7 @@ class PredictionService {
       return null;
     }
   }
-
 }
-
-
 
 String getUrl() {
   Uri uri = Uri.parse(window.location.href);
