@@ -21,7 +21,7 @@ COPY web_client/build/web /app/web_server/static/web
 EXPOSE 8080
 
 # Set PYTHONPATH to the current working directory
-#ENV PYTHONPATH=/app
+ENV PYTHONPATH=/app
 
 # Run app.py when the container launchese
 CMD ["PYTHONPATH=$(pwd)"]
