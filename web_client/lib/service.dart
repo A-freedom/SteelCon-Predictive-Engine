@@ -7,10 +7,10 @@ import 'package:http/http.dart' as http;
 
 class PredictionService {
   // The URL of the backend server that hosts the ANN model
-  final String _baseUrlPredict = '${getUrl()}/predict_R_CFST';
-  final String _baseUrlDesign = '${getUrl()}/design_R_CFST';
-  // final String _baseUrlPredict = 'http://127.0.0.1:8080/predict_R_CFST';
-  // final String _baseUrlDesign = 'http://127.0.0.1:8080/design_R_CFST';
+  // final String _baseUrlPredict = '${getUrl()}/predict_R_CFST';
+  // final String _baseUrlDesign = '${getUrl()}/design_R_CFST';
+  final String _baseUrlPredict = 'http://127.0.0.1:8080/predict_R_CFST';
+  final String _baseUrlDesign = 'http://127.0.0.1:8080/design_R_CFST';
 
   // A method that takes the input parameters and returns the predicted compressive strength
   Future<String> predictRHSS(

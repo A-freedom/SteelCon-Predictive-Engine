@@ -21,6 +21,7 @@ class _DesignPageState extends State<DesignPage> {
   @override
   Widget build(BuildContext context) {
     var columns = [
+      JsonTableColumn('L (mm)', label: 'L (mm)'),
       JsonTableColumn('AISC_Manual_Label', label: 'SECTION NAME'),
       JsonTableColumn('W Kg/m', label: 'W (Kg/m)'),
       JsonTableColumn('b (mm)', label: 'b (mm)'),

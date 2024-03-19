@@ -16,9 +16,9 @@ def get_design_tables(criteria):
     for column, value in criteria.items():
         condition = value['condition']
         if condition == 'less':
-            filtered_df = filtered_df[filtered_df[column] < float(value['value'])]
+            filtered_df = filtered_df[filtered_df[column] <= float(value['value'])]
         elif condition == 'more':
-            filtered_df = filtered_df[filtered_df[column] > float(value['value'])]
+            filtered_df = filtered_df[filtered_df[column] >= float(value['value'])]
         elif condition == 'between':
             filtered_df = filtered_df[(filtered_df[column] >= float(value['min'])) & (filtered_df[column] <= float(value['max']))]
         elif condition == 'equal':

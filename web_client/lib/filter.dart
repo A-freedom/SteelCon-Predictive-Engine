@@ -46,11 +46,14 @@ class _FilterItemState extends State<FilterItem> {
   @override
   Widget build(BuildContext context) {
     const textSize = 12.0;
-    final items = Provider.of<FilterManager>(context)
+    final items = Provider
+        .of<FilterManager>(context)
         .columns
-        .where((column) => !Provider.of<FilterManager>(context)
-            .filters
-            .any((filter) => filter.selectedColumn == column))
+        .where((column) =>
+    !Provider
+        .of<FilterManager>(context)
+        .filters
+        .any((filter) => filter.selectedColumn == column))
         .toList()
       ..add(widget.filter.selectedColumn);
 
@@ -84,7 +87,8 @@ class _FilterItemState extends State<FilterItem> {
               children: [
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    decoration:const InputDecoration(labelStyle: TextStyle(fontSize: textSize)),
+                    decoration: const InputDecoration(
+                        labelStyle: TextStyle(fontSize: textSize)),
                     value: widget.filter.selectedFilterType,
                     onChanged: (newValue) {
                       setState(() {
@@ -152,10 +156,14 @@ class _FilterItemState extends State<FilterItem> {
                       ),
                     ),
                   ),
-                IconButton(
-                  onPressed: widget.onDelete,
-                  icon: const Icon(Icons.delete,size: 15,),
-                ),
+                if (widget.filter.showDeleteButton)
+                  IconButton(
+                    onPressed: widget.onDelete,
+                    icon: const Icon(
+                      Icons.delete,
+                      size: 15,
+                    ),
+                  ),
               ],
             ),
           )
@@ -170,7 +178,9 @@ class Filter extends ChangeNotifier {
   String _selectedFilterType = 'More';
   double _value = 0.0; // For Max, Min, and Equal filters
   double _lowerLimit = 0.0; // For Between filter
-  double _upperLimit = 0.0; // For Between filter
+  double _upperLimit = 0.0;
+
+  var showDeleteButton = true; // For Between filter
 
   Filter({required String selectedColumn}) : _selectedColumn = selectedColumn;
 
@@ -218,6 +228,14 @@ class Filter extends ChangeNotifier {
           'max': _upperLimit.toString(),
         }
       };
+    } else if (_selectedFilterType == 'Equal') {
+      return {
+        _selectedColumn: {
+          'condition': 'between',
+          'min': (value*0.98).toString(),
+          'max': (value*1.02).toString(),
+        }
+      };
     } else {
       return {
         _selectedColumn: {
@@ -240,7 +258,12 @@ class FilterManager extends ChangeNotifier {
     'fy (MPa)',
     'fc (MPa)',
   ];
-  final List<Filter> _filters = [];
+  final List<Filter> _filters = [
+    Filter(selectedColumn: 'L (mm)')
+      ..showDeleteButton = false,
+    Filter(selectedColumn: 'ΦP ANN (kN)')
+      ..showDeleteButton = false
+  ];
 
   List<Filter> get filters => _filters;
 
