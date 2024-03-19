@@ -28,6 +28,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  google_nav_bar: ^5.0.6
+  json_table: ^2.0.1
+  provider: ^6.1.2
   flutter:
     sdk: flutter
   http: ^1.2.1
