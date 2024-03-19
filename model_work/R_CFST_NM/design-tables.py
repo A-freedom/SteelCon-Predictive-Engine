@@ -6,7 +6,6 @@ from itertools import product
 
 # Read the original DataFrame
 df_original = pd.read_csv('DATA/AISC-R_HSS.csv')
-
 # Filter the original DataFrame based on specific criteria
 df_filtered = df_original[
     (df_original['b (mm)'].between(40, 360)) &
@@ -16,7 +15,7 @@ df_filtered = df_original[
 
 # Define possible values for fy and fc
 fy_values = [240, 420, 600, 800]
-fc_values = [35, 45, 55, 65, 75]
+fc_values = [30, 35, 40, 45, 50, 55, 60, 65, 75]
 l_values = [2500, 2750, 3000, 3250, 3500, 3750, 4000, 4250, 4500]
 
 # Create all combinations of fy, fc, and L values
@@ -49,9 +48,11 @@ df_to_predict = df_repeated[['b (mm)', 'h (mm)', 't (mm)', 'L (mm)', 'fy (MPa)',
 
 # Perform prediction and add results to the DataFrame
 df_to_predict['N Test (kN)'] = 0
-df_repeated['Pno ANN (kN)'] = predict_ann(df_to_predict,)
+df_repeated['ΦP ANN (kN)'] = predict_ann(df_to_predict, )
 
-# Display the resulting DataFrame
-df_repeated = df_repeated.sort_values(by='W',ascending=True)
+df_repeated = df_repeated[df_repeated['ΦP ANN (kN)'] > 50]
+df_repeated['ΦP ANN (kN)'] = df_repeated['ΦP ANN (kN)'].round().astype(int)
+df_repeated = df_repeated.sort_values(by='W', ascending=True)
+df_repeated = df_repeated.rename(columns={'W': 'W Kg/m'})
 print(df_repeated)
-df_repeated.to_csv('DATA/AISC-R_HSS-design-tables.csv',index=False)
+df_repeated.to_csv('DATA/AISC-R_HSS-design-tables.csv', index=False)

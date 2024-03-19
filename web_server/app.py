@@ -1,7 +1,11 @@
 import pickle
+
+import numpy as np
 import tensorflow as tf
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
+
+from model_work.R_CFST_NM.designing import get_design_tables
 from model_work.R_CFST_NM.prediction import create_data_frame, predict_ann, predict_aisc
 
 # Load the model and scaler
@@ -65,6 +69,13 @@ def predict():
 
     return jsonify(prediction), 200
 
+@app.route('/design_R_CFST', methods=['POST'])
+def design():
+    criteria_row = request.json
+    # criteria = {key: eval(value) for key, value in criteria_row.items()}
+    print(criteria_row)
+    print(get_design_tables(criteria_row))
+    return jsonify(get_design_tables(criteria_row).to_dict(orient='records'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=False)
