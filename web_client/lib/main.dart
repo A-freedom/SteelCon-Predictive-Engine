@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'analysesPage.dart';
+import 'dataStructure.dart';
 import 'designPage.dart';
-import 'filter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,11 +16,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context)=>FilterManager())
+        ChangeNotifierProvider(create: (context)=>FilterManager()),
+        ChangeNotifierProvider(create: (context)=>JsonManager())
       ],
       child: MaterialApp(
         title: 'ConSteel',
-        theme: ThemeData.dark(useMaterial3: true), // Enable Material 3
+        theme: ThemeData(useMaterial3: true,brightness: MediaQuery.of(context).platformBrightness,), // Enable Material 3
         initialRoute: '/AnalysesPage',
         routes: {
           '/AnalysesPage': (context) => const AnalysesPage(),

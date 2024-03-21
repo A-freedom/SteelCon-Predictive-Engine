@@ -27,10 +27,7 @@ class My_GNAV extends StatelessWidget {
   Widget build(BuildContext context) {
     return GNav(
       selectedIndex: selectedIndex,
-      gap: 8,
-      activeColor: Colors.white,
-      iconSize: 24,
-      padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
+      gap: 15,
       tabs: [
         GButton(
           icon: Icons.calculate,

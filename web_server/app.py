@@ -51,7 +51,6 @@ def index():
 @app.route('/predict_R_CFST', methods=['POST'])
 def predict():
     data = request.form
-
     # Validate input parameters
     error = validate_params(data)
     if error:
@@ -66,7 +65,7 @@ def predict():
         'ANN': int(predict_ann(df)),
         'ASIC': int(predict_aisc(df).loc[0])
     }
-
+    print(jsonify(prediction))
     return jsonify(prediction), 200
 
 @app.route('/design_R_CFST', methods=['POST'])
