@@ -62,8 +62,8 @@ class _DesignPageState extends State<DesignPage> {
                   ),
                 ),
                 myJson.isEmpty
-                    ? Expanded(
-                      child: const Center(
+                    ? const Expanded(
+                      child: Center(
                           child: Text('N O  R E S U L T'),
                         ),
                     )

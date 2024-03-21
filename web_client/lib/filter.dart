@@ -133,8 +133,10 @@ class _FilterItemState extends State<FilterItem> {
                 if (widget.filter.showDeleteButton)
                   IconButton(
                     onPressed: () {
-                      widget.onDelete();
-                      update();
+                      setState(() {
+                        widget.onDelete();
+                        update();
+                      });
                     },
                     icon: const Icon(
                       Icons.delete,
