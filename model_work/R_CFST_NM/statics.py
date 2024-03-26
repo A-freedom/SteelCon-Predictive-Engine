@@ -1,11 +1,11 @@
 # %%
-from data_preprocessor import get_data_frame
+from data_preprocessor import DataPreprocessor
 
-df = get_data_frame(denormalize_data=True)
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 # %%
+df = DataPreprocessor().df
 dete_describe = df.describe()
 # save file
 dete_describe.to_csv('DATA/statics_analysis/describe.csv')

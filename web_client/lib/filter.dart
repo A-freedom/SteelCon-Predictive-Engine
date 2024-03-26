@@ -31,12 +31,12 @@ class _FilterItemState extends State<FilterItem> {
     _upperLimitController = TextEditingController();
     _formKey = GlobalKey<FormState>();
     // Initialize text controllers with current values
-    if (widget.filter.selectedFilterType != 'Between') {
-      _valueController.text = widget.filter.value.toString();
-    } else {
-      _lowerLimitController.text = widget.filter.lowerLimit.toString();
-      _upperLimitController.text = widget.filter.upperLimit.toString();
-    }
+    // if (widget.filter.selectedFilterType != 'Between') {
+    //   _valueController.text = widget.filter.value.toString();
+    // } else {
+    //   _lowerLimitController.text = widget.filter.lowerLimit.toString();
+    //   _upperLimitController.text = widget.filter.upperLimit.toString();
+    // }
   }
 
   @override
@@ -78,6 +78,9 @@ class _FilterItemState extends State<FilterItem> {
       ..add(widget.filter.selectedColumn);
 
     return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Theme.of(context).textTheme.displayLarge!.color!)
+      ),
       padding: const EdgeInsets.all(8.0),
       child: Form(
         key: _formKey,
