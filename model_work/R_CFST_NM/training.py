@@ -1,4 +1,4 @@
-#%%
+# %%
 import os
 
 import tensorflow as tf
@@ -6,7 +6,6 @@ import tensorflow as tf
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 os.environ["CUDA_VISIBLE_DEVICES"] = ""  # Limit TensorFlow to CPU only
 from data_preprocessor import DataPreprocessor
-# from my_data import random_seed
 from my_tools import evaluate_and_plot
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
 
@@ -25,8 +24,8 @@ model = tf.keras.Sequential([
 ])
 
 # Compile the model
-custom_optimizer = tf.keras.optimizers.Adam(learning_rate=0.001,)
-model.compile(optimizer=custom_optimizer,loss='mse', metrics=["mape", "mse"])
+custom_optimizer = tf.keras.optimizers.Adam(learning_rate=0.001, )
+model.compile(optimizer=custom_optimizer, loss='mse', metrics=["mape", "mse"])
 
 # Define callbacks
 # Early stopping callback
@@ -52,4 +51,4 @@ evaluate_and_plot(X_test, y_test, model, 'test data')
 
 evaluate_and_plot(X, y, model, 'All data')
 
-#%%
+# %%
