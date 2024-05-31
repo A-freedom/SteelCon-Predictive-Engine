@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN python3 -m venv .venv
+RUN python -m venv .venv
 RUN source .venv/bin/activate
 RUN ln -s ../web_client/build/web web_server/static
 RUN pip3 install --no-cache-dir -r server_requirements.txt
