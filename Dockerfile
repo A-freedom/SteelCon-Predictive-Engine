@@ -7,7 +7,6 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN apt install python3-full
 RUN python3 -m venv .venv
 RUN source .venv/bin/activate
 RUN ln -s ../web_client/build/web web_server/static
