@@ -29,20 +29,53 @@ docker run -p 8080:8080 steel_concrete
 ```
 if you want to Replace 8080 with your desired port number. The application will be accessible at http://localhost:8080 .
 
-## local Installation
+## Local Installation for Linux `"ubuntu"`
 ### Prerequisites
 
 Ensure you have `python3-full` and `git` installed on your system.
 ```bash
-# install python
+# install python.
 sudo apt install python3-full    
-# create python virtual environment
+# create python virtual environment.
 python3 -m venv .venv   
-# create enter the virtual environment
+# create enter the virtual environment.
 source .venv/bin/activate     
-# install the requirements from the requirements.txt file 
-# if you wish only to run the serve you could use server_requirements.txt file instead
+# install the requirements from the requirements.txt file .
+# if you wish only to run the serve you could use server_requirements.txt file instead.
 python -m pip install --no-cache-dir -r requirements.txt
+# link the web_client to be served by the web_server.
+ln -s ../web_client/build/web web_server/static
 ```
 
+# Local Installation for Windows
 
+# Project Setup Guide
+
+## Local Installation for Windows
+
+### Prerequisites
+
+Ensure you have `python3` and `git` installed on your system.
+
+### Setup Instructions
+
+1. **Download and Install Python:**  
+   Download Python from the [official website](https://www.python.org/downloads/windows/) and follow the installation instructions. Make sure to check the option to add Python to PATH during installation.
+
+2. **Install Git:**  
+   Download and install Git for Windows from the [official website](https://git-scm.com/download/win).
+
+3. **Create a Virtual Environment:**
+
+   Open Command Prompt as administrator and navigate to your project directory. Then, create and activate a virtual environment.
+```bash
+# create python virtual environment.
+python -m venv .venv  
+# create enter the virtual environment.
+.venv\Scripts\activate    
+# install the requirements from the requirements.txt file .
+# if you wish only to run the serve you could use server_requirements.txt file instead.
+python -m pip install --no-cache-dir -r requirements.txt
+# link the web_client to be served by the web_server.
+robocopy /S /E "..\web_client\build\web" "web_server\static"
+```

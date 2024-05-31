@@ -7,14 +7,14 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
+RUN apt install python3-full
+RUN python3 -m venv .venv
+RUN source .venv/bin/activate
+RUN ln -s ../web_client/build/web web_server/static
 RUN pip3 install --no-cache-dir -r server_requirements.txt
-
-# Copy the built Flutter web app to the web_server/static directory
-COPY web_client/build/web /app/web_server/static
-
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
-# Run app.py when the container launchese
+# Run app.py when the container launches
 CMD ["python", "run_web_service.py"]
