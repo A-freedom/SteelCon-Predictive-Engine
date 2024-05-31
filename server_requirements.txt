@@ -1,6 +1,6 @@
-Flask
-Flask_Cors
-keras
-pandas
-tensorflow
-scikit_learn
+Flask==3.0.3
+Flask_Cors==4.0.1
+keras==3.3.3
+pandas==2.2.2
+scikit_learn==1.5.0
+tensorflow==2.16.2
