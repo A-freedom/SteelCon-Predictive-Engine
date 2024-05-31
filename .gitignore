@@ -3,3 +3,7 @@ qodana.yaml
 .idea
 __pycache__
 web_server/static/web/*
+.venv
+test.py
+work_flow_diagram.drawio
+logs

@@ -3,12 +3,12 @@ import tensorflow as tf
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 
-from model_work.R_CFST_NM.designing import get_design_tables
-from model_work.R_CFST_NM.prediction import create_data_frame, predict_ann, predict_aisc
+from R_CFST_NM.designing import get_design_tables
+from R_CFST_NM.prediction import create_data_frame, predict_ann, predict_aisc
 
 # Load the model and scaler
-loaded_model = tf.keras.models.load_model('model_work/R_CFST_NM/my_model/best_model.h5')
-with open('model_work/R_CFST_NM/my_model/data_scaler.pkl', 'rb') as f:
+loaded_model = tf.keras.models.load_model('R_CFST_NM/my_model/best_model.keras')
+with open('R_CFST_NM/my_model/data_scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
 # Initialize Flask app
