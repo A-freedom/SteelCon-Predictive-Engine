@@ -58,14 +58,17 @@ ln -s ../web_client/build/web web_server/static
 Ensure you have `python3` and `git` installed on your system.
 
 ### Setup Instructions
-
+** If you are going to use 
 1. **Download and Install Python:**  
    Download Python from the [official website](https://www.python.org/downloads/windows/) and follow the installation instructions. Make sure to check the option to add Python to PATH during installation.
 
-2. **Install Git:**  
+2. **Install `Git` :**  
    Download and install Git for Windows from the [official website](https://git-scm.com/download/win).
 
-3. **Create a Virtual Environment:**
+3. **Install `icrosoft Visual C++` :**   
+   Download from the [official website](https://learn.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist?view=msvc-170)
+
+4. **Create a Virtual Environment:**
 
    Open Command Prompt as administrator and navigate to your project directory. Then, create and activate a virtual environment.
 ```bash
@@ -79,10 +82,3 @@ python -m pip install --no-cache-dir -r requirements.txt
 # link the web_client to be served by the web_server.
 copy web_client\build\web web_server\static -r
 ```
-
-# note 
-In case you got the flowing error
-```bash
-Tensorflow _pywrap_tf2 ImportError: DLL load failed
-```
-you will need to install Microsoft Visual C++ Redistributable you can download from the [official website](https://learn.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist?view=msvc-170) this will solve the problem.
