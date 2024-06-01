@@ -61,7 +61,7 @@ def predict():
     df = create_data_frame(**prediction_params)
     prediction = {
         'ANN': int(predict_ann(df)),
-        'AISC': int(predict_aisc(df,factored=True).loc[0])
+        # 'AISC': int(predict_aisc(df,factored=True).loc[0])
     }
     return jsonify(prediction), 200
 
