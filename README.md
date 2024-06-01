@@ -64,24 +64,24 @@ Ensure you have `python3` and `git` installed on your system.
 
 2. **Install `Git` :**  
    Download and install Git for Windows from the [official website](https://git-scm.com/download/win).
+3. **Download the project :**  
+   you could download the by ruing the script form the download section.
 
-3. **Install `icrosoft Visual C++` :**   
+4. **Install `icrosoft Visual C++` :**   
    Download from the [official website](https://learn.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist?view=msvc-170)
 
-4. **Create a Virtual Environment:**
-
-   Open Command Prompt as administrator and navigate to your project directory. Then, create and activate a virtual environment by running the script blow.
-```bash
-# create python virtual environment.
-python -m venv .venv  
-# create enter the virtual environment.
-.venv\Scripts\activate    
-# install the requirements from the requirements.txt file .
-# if you wish only to run the serve you could use server_requirements.txt file instead.
-python -m pip install --no-cache-dir -r requirements.txt
-```
-5. **If you want to run the web_server you will need to run the flowing command .** 
-```bash
-# link the web_client to be served by the web_server.
-copy web_client\build\web web_server\static -r
-```
+5. **Create a Virtual Environment:**
+   ```bash
+   # create python virtual environment.
+   python -m venv .venv  
+   # create enter the virtual environment.
+   .venv\Scripts\activate    
+   # install the requirements from the requirements.txt file .
+   python -m pip install --no-cache-dir -r requirements.txt
+   ```
+   #### if you wish only to run the serve you could use `server_requirements.txt` file instead.
+6. **If you want to run the web_server you will need to run the flowing command .** 
+   ```bash
+   # link the web_client to be served by the web_server.
+   copy web_client\build\web web_server\static -r
+   ```
