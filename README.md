@@ -79,3 +79,10 @@ python -m pip install --no-cache-dir -r requirements.txt
 # link the web_client to be served by the web_server.
 copy web_client\build\web web_server\static -r
 ```
+
+# note 
+In case you got the flowing error
+```bash
+Tensorflow _pywrap_tf2 ImportError: DLL load failed
+```
+you will need to install Microsoft Visual C++ Redistributable you can download from the [official website](https://learn.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist?view=msvc-170) this will solve the problem.
