@@ -58,7 +58,7 @@ ln -s ../web_client/build/web web_server/static
 Ensure you have `python3` and `git` installed on your system.
 
 ### Setup Instructions
-#### If you are going to use `pycharm` you could skip the 1,2 .
+#### If you are going to use `pycharm` [official website](https://www.jetbrains.com/pycharm/download/?section=windows) you could skip the 1,2 .
 1. **Download and Install Python:**  
    Download Python from the [official website](https://www.python.org/downloads/windows/) and follow the installation instructions. Make sure to check the option to add Python to PATH during installation.
 
