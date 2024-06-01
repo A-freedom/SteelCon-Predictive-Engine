@@ -77,5 +77,5 @@ python -m venv .venv
 # if you wish only to run the serve you could use server_requirements.txt file instead.
 python -m pip install --no-cache-dir -r requirements.txt
 # link the web_client to be served by the web_server.
-robocopy /S /E "..\web_client\build\web" "web_server\static"
+copy web_client\build\web web_server\static -r
 ```
