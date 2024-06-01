@@ -58,7 +58,7 @@ ln -s ../web_client/build/web web_server/static
 Ensure you have `python3` and `git` installed on your system.
 
 ### Setup Instructions
-** If you are going to use 
+#### If you are going to use `pycharm` you could skip the 1,2 .
 1. **Download and Install Python:**  
    Download Python from the [official website](https://www.python.org/downloads/windows/) and follow the installation instructions. Make sure to check the option to add Python to PATH during installation.
 
@@ -70,7 +70,7 @@ Ensure you have `python3` and `git` installed on your system.
 
 4. **Create a Virtual Environment:**
 
-   Open Command Prompt as administrator and navigate to your project directory. Then, create and activate a virtual environment.
+   Open Command Prompt as administrator and navigate to your project directory. Then, create and activate a virtual environment by running the script blow.
 ```bash
 # create python virtual environment.
 python -m venv .venv  
@@ -79,6 +79,9 @@ python -m venv .venv
 # install the requirements from the requirements.txt file .
 # if you wish only to run the serve you could use server_requirements.txt file instead.
 python -m pip install --no-cache-dir -r requirements.txt
+```
+5. **If you want to run the web_server you will need to run the flowing command .** 
+```bash
 # link the web_client to be served by the web_server.
 copy web_client\build\web web_server\static -r
 ```
